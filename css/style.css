@@ -1,1171 +1,348 @@
-/* BÉ LUYỆN CHỮ - Phong cách Hoạt Họa Kẹo Ngọt Nổi 3D dành cho Học sinh Lớp 1 */
 :root {
-  --ink: #1f2937;
-  --paper: #ffffff;
-  --sky: #bae6fd;
-  --red: #ff4757;
-  --sun: #ffbe0b;
-  --leaf: #2ed573;
-  --blue: #3a86ff;
-  --lilac: #d8b4fe;
-  --orange: #ff9f43;
-  --pink: #ff75a0;
-  --mute: #6b7280;
-  --rule: #bfdbfe;
-  --shadow-color: rgba(31, 41, 55, 0.15);
+    --primary-color: #ff6b81;
+    --secondary-color: #ff4757;
+    --accent-color: #2ed573;
+    --bg-color: #f7f1e3;
+    --card-bg: #ffffff;
+    --text-color: #2f3542;
+    --line-color: #ffcccc;
+    --dark-line-color: #ff9999;
 }
 
 * {
-  box-sizing: border-box;
-  font-family: 'Fredoka', 'Mali', 'Nunito', system-ui, sans-serif;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-html {
-  -webkit-text-size-adjust: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-  margin: 0;
-  padding: 16px;
-  padding-bottom: 110px;
-  min-height: 100vh;
-  display: flex;
-  color: var(--ink);
-  font-weight: 600;
-  background: 
-    radial-gradient(circle at 10% 20%, #fff 0 45px, transparent 46px),
-    radial-gradient(circle at 90% 80%, #fff 0 60px, transparent 61px),
-    linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #fef08a 100%);
-  background-attachment: fixed;
-  overflow-x: hidden;
+    font-family: 'Quicksand', 'Comic Neue', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    padding: 20px;
 }
 
-button {
-  cursor: pointer;
-  color: var(--ink);
-  font-weight: 700;
-  border: none;
-  outline: none;
+.app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    overflow: hidden;
+    border: 4px solid #ffda79;
 }
 
-input {
-  user-select: text;
-  -webkit-user-select: text;
+/* Header */
+.app-header {
+    background: linear-gradient(135deg, #ff9ff3, #feca57);
+    padding: 20px;
+    text-align: center;
+    color: #2f3542;
 }
 
-.hidden {
-  display: none !important;
+.app-header h1 {
+    font-size: 2rem;
+    margin-bottom: 5px;
+    font-family: 'Comic Neue', cursive;
 }
 
-:focus-visible {
-  outline: 4px solid var(--sun);
-  outline-offset: 2px;
+/* Navigation Tabs */
+.tab-nav {
+    display: flex;
+    background: #ffeaa7;
+    border-bottom: 3px solid #fdcb6e;
 }
 
-/* ---------------- KHUNG CARD VÀ NÚT 3D TOY-LIKE ---------------- */
-.login-card, .top-header, .feature-card, .sidebar-letters, .lesson-header-card, 
-.instruction-card, .canvas-workspace, .quiz-card, .modal-card, .hero-banner, .badge-section {
-  background: var(--paper);
-  border: 4px solid var(--ink);
-  border-radius: 28px;
-  box-shadow: 0 8px 0 var(--ink);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+.tab-btn {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    background: transparent;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #636e72;
+    cursor: pointer;
+    transition: all 0.3s;
 }
 
-.btn-submit, .btn-action, .btn-speak-large, .btn-tool, .btn-logout, .role-btn, 
-.nav-btn, .letter-btn, .quiz-opt-btn, .btn-modal-save, .btn-modal-cancel {
-  border: 3px solid var(--ink);
-  border-radius: 20px;
-  box-shadow: 0 5px 0 var(--ink);
-  font-weight: 700;
-  transition: transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.08s, background 0.2s;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
+.tab-btn.active {
+    background: #ffffff;
+    color: var(--secondary-color);
+    border-bottom: 4px solid var(--secondary-color);
 }
 
-.btn-submit:hover, .btn-action:hover, .btn-speak-large:hover, .btn-tool:hover, 
-.role-btn:hover, .nav-btn:hover, .letter-btn:hover, .quiz-opt-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 7px 0 var(--ink);
+.tab-content {
+    display: none;
+    padding: 20px;
 }
 
-.btn-submit:active, .btn-action:active, .btn-speak-large:active, .btn-tool:active, 
-.btn-logout:active, .role-btn:active, .nav-btn:active, .letter-btn:active, 
-.quiz-opt-btn:active, .btn-modal-save:active, .btn-modal-cancel:active {
-  transform: translateY(5px) !important;
-  box-shadow: 0 0 0 var(--ink) !important;
+.tab-content.active {
+    display: block;
 }
 
-/* ---------------- MÀN HÌNH ĐĂNG NHẬP ---------------- */
-.login-wrapper {
-  width: 100%;
-  max-width: 440px;
-  margin: auto;
-  position: relative;
-  z-index: 10;
+/* Alphabet Layout */
+.alphabet-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 20px;
 }
 
-.login-card {
-  padding: 40px 28px 32px;
-  text-align: center;
-  position: relative;
-  background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+@media (max-width: 768px) {
+    .alphabet-layout {
+        grid-template-columns: 1fr;
+    }
 }
 
-.brand-badge {
-  width: 96px;
-  height: 96px;
-  margin: -76px auto 14px;
-  border-radius: 50%;
-  background: var(--sun);
-  border: 4px solid var(--ink);
-  box-shadow: 0 6px 0 var(--ink);
-  display: grid;
-  place-items: center;
-  font-size: 50px;
-  animation: writing 2s ease-in-out infinite;
+.letter-sidebar {
+    background: #f1f2f6;
+    padding: 15px;
+    border-radius: 12px;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
-.brand h1 {
-  margin: 0;
-  font-size: 42px;
-  line-height: 1.1;
-  letter-spacing: 2px;
+.letter-sidebar h3 {
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: #2f3542;
 }
 
-.brand h1 span {
-  display: inline-block;
-  animation: hop 2s ease-in-out infinite;
-  animation-delay: calc(var(--i) * 0.08s);
-  -webkit-text-stroke: 2px var(--ink);
-  paint-order: stroke fill;
-  text-shadow: 0 4px 0 var(--ink);
+.letter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
 }
 
-.brand h1 span:nth-child(5n+1) { color: var(--red); }
-.brand h1 span:nth-child(5n+2) { color: var(--sun); }
-.brand h1 span:nth-child(5n+3) { color: var(--leaf); }
-.brand h1 span:nth-child(5n+4) { color: var(--blue); }
-.brand h1 span:nth-child(5n+5) { color: var(--orange); }
-
-.brand p {
-  margin: 10px 0 0;
-  color: var(--mute);
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.role-switch {
-  display: flex;
-  gap: 12px;
-  margin: 22px 0;
-}
-
-.role-btn {
-  flex: 1;
-  padding: 12px 8px;
-  background: #fff;
-  font-size: 16px;
-}
-
-.role-btn.active {
-  background: var(--lilac);
-}
-
-.input-group {
-  text-align: left;
-  margin-bottom: 18px;
-}
-
-.input-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 17px;
-  font-weight: 800;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 14px 18px;
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--ink);
-  border: 3px solid var(--ink);
-  border-radius: 20px;
-  background: #fff;
-  outline: none;
-  box-shadow: inset 0 3px 0 var(--shadow-color);
-}
-
-.input-group input:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 4px #93c5fd;
-}
-
-.pin-input {
-  letter-spacing: 12px;
-  text-align: center;
-  font-size: 26px !important;
-}
-
-.pin-hint {
-  margin: 8px 0 0;
-  font-size: 14px;
-  color: var(--mute);
-  font-weight: 700;
-}
-
-.auth-error {
-  margin: 0 0 16px;
-  padding: 12px;
-  background: #ffdde1;
-  border: 3px solid var(--ink);
-  border-radius: 18px;
-  font-weight: 800;
-  color: #c0392b;
-}
-
-.btn-submit {
-  width: 100%;
-  padding: 16px;
-  background: var(--leaf);
-  font-size: 22px;
-  color: var(--ink);
-  margin-top: 6px;
-}
-
-/* ---------------- KHUNG TRANG CHÍNH & TOP HEADER ---------------- */
-.main-wrapper {
-  width: 100%;
-  max-width: 1120px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 10;
-}
-
-.top-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 14px 20px;
-  margin-bottom: 24px;
-  background: #ffffffd0;
-  backdrop-filter: blur(8px);
-}
-
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.avatar-ring {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: var(--sun);
-  border: 3px solid var(--ink);
-  box-shadow: 0 4px 0 var(--ink);
-  display: grid;
-  place-items: center;
-  font-size: 30px;
-}
-
-.name-box {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 20px;
-  font-weight: 900;
-}
-
-.btn-icon-edit {
-  border: none;
-  background: none;
-  font-size: 16px;
-  padding: 4px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.btn-icon-edit:hover {
-  transform: scale(1.3) rotate(15deg);
-}
-
-.role-badge {
-  display: inline-block;
-  padding: 2px 10px;
-  font-size: 13px;
-  font-weight: 800;
-  background: var(--lilac);
-  border: 2px solid var(--ink);
-  border-radius: 20px;
-}
-
-.main-nav {
-  display: flex;
-  gap: 10px;
-}
-
-.nav-btn {
-  padding: 10px 18px;
-  background: #fff;
-  font-size: 17px;
-}
-
-.nav-btn.active {
-  background: var(--blue);
-  color: #fff;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.score-chip {
-  padding: 8px 16px;
-  background: var(--sun);
-  border: 3px solid var(--ink);
-  border-radius: 20px;
-  box-shadow: 0 4px 0 var(--ink);
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.btn-logout {
-  padding: 9px 12px;
-  background: var(--red);
-  font-size: 18px;
-}
-
-/* ---------------- TRANG CHỦ ---------------- */
-.hero-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  padding: 32px 36px;
-  margin-bottom: 26px;
-  background: linear-gradient(120deg, #fde047, #ff9f43);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-text h2 {
-  margin: 0 0 8px;
-  font-size: clamp(28px, 4.5vw, 40px);
-  line-height: 1.1;
-  color: var(--ink);
-  text-shadow: 2px 2px 0 #fff;
-}
-
-.hero-text p {
-  margin: 0;
-  font-size: 19px;
-  max-width: 38ch;
-  line-height: 1.4;
-}
-
-.hero-illustration {
-  font-size: 90px;
-  animation: bob 2.2s ease-in-out infinite;
-  flex: none;
-}
-
-.feature-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.feature-card {
-  padding: 28px;
-  cursor: pointer;
-  background: #ffffff;
-  position: relative;
-}
-
-.feature-card:nth-child(1) { background: #eff6ff; }
-.feature-card:nth-child(2) { background: #f0fdf4; }
-
-.card-icon {
-  width: 72px;
-  height: 72px;
-  display: grid;
-  place-items: center;
-  font-size: 40px;
-  background: #fff;
-  border: 3px solid var(--ink);
-  border-radius: 22px;
-  box-shadow: 0 5px 0 var(--ink);
-  margin-bottom: 16px;
-  animation: bob 2.6s ease-in-out infinite;
-}
-
-.feature-card:nth-child(2) .card-icon {
-  animation-delay: -1.3s;
-}
-
-.feature-card h3 {
-  margin: 0 0 8px;
-  font-size: 26px;
-}
-
-.feature-card p {
-  margin: 0 0 20px;
-  color: var(--mute);
-  font-size: 17px;
-  line-height: 1.4;
-}
-
-.btn-action {
-  padding: 12px 24px;
-  background: var(--blue);
-  color: #fff;
-  font-size: 18px;
-}
-
-.feature-card:nth-child(2) .btn-action {
-  background: var(--leaf);
-  color: var(--ink);
-}
-
-/* Bộ sưu tầm huy hiệu */
-.badge-section {
-  margin-top: 28px;
-  padding: 24px;
-}
-
-.badge-section h3 {
-  margin: 0 0 18px;
-  font-size: 24px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 16px;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.badge-count {
-  font-size: 16px;
-  padding: 4px 14px;
-  background: var(--lilac);
-  border: 2px solid var(--ink);
-  border-radius: 20px;
-}
-
-.badge-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
-  gap: 14px;
-}
-
-.badge {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  padding: 14px 10px;
-  text-align: center;
-  background: #fef9c3;
-  border: 3px solid var(--ink);
-  border-radius: 22px;
-  box-shadow: 0 5px 0 var(--ink);
-  transition: transform 0.2s;
-}
-
-.badge-icon {
-  font-size: 42px;
-  line-height: 1.1;
-}
-
-.badge b {
-  font-size: 16px;
-}
-
-.badge small {
-  font-size: 13px;
-  color: var(--mute);
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-.badge.locked {
-  background: #f1f5f9;
-  filter: grayscale(1);
-  opacity: 0.6;
-  box-shadow: none;
-}
-
-.badge:not(.locked) .badge-icon {
-  animation: bob 2.4s ease-in-out infinite;
-}
-
-/* ---------------- TRANG BÀI HỌC ---------------- */
-.workspace-layout {
-  display: grid;
-  grid-template-columns: 270px 1fr;
-  gap: 24px;
-  align-items: start;
-}
-
-.sidebar-letters {
-  padding: 18px;
-  position: sticky;
-  top: 16px;
-  max-height: calc(100vh - 32px);
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-header h3 {
-  margin: 0 0 14px;
-  font-size: 22px;
-  text-align: center;
-}
-
-.letters-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  overflow-y: auto;
-  padding: 4px;
-}
-
-/* Màu sắc đa dạng sinh động cho bảng 29 chữ cái */
 .letter-btn {
-  aspect-ratio: 1;
-  background: #fff;
-  font-size: 24px;
-  font-family: 'Mali', sans-serif;
-  font-weight: 700;
+    aspect-ratio: 1;
+    border: 2px solid #dfe4ea;
+    background: #ffffff;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
 }
 
-.letter-btn:not(.active):not(.done):nth-child(5n+1) { background: #ffe4e6; }
-.letter-btn:not(.active):not(.done):nth-child(5n+2) { background: #fef08a; }
-.letter-btn:not(.active):not(.done):nth-child(5n+3) { background: #e0f2fe; }
-.letter-btn:not(.active):not(.done):nth-child(5n+4) { background: #f3e8ff; }
-.letter-btn:not(.active):not(.done):nth-child(5n+5) { background: #dcfce7; }
-
-.letter-btn.done {
-  background: #86efac !important;
+.letter-btn:hover {
+    background: #fffa65;
+    border-color: #ffd32a;
 }
 
 .letter-btn.active {
-  background: var(--red) !important;
-  color: #fff !important;
-  animation: bob 1.6s ease-in-out infinite;
+    background: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+    transform: scale(1.05);
 }
 
-.lesson-main {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  min-width: 0;
+/* Workspace */
+.letter-workspace {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.lesson-header-card {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding: 18px 24px;
-  background: #fff;
+.letter-info-card {
+    display: flex;
+    gap: 20px;
+    background: #fff0f5;
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px dashed #ffb6c1;
+    align-items: center;
 }
 
-.letter-display-box {
-  width: 110px;
-  height: 110px;
-  flex: none;
-  display: grid;
-  place-items: center;
-  border: 4px solid var(--ink);
-  border-radius: 22px;
-  font: 700 72px/1 'Mali', sans-serif;
-  color: var(--red);
-  padding-bottom: 8px;
-  background: repeating-linear-gradient(#fff 0 26px, var(--rule) 26px 28px);
-  box-shadow: 0 6px 0 var(--ink);
+.display-character {
+    font-size: 5rem;
+    font-weight: bold;
+    width: 120px;
+    height: 120px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    color: var(--secondary-color);
+    font-family: 'Comic Neue', cursive;
 }
 
-.word-pic {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 8px 18px;
-  background: #eff6ff;
-  border: 3px solid var(--ink);
-  border-radius: 22px;
-  box-shadow: 0 5px 0 var(--ink);
+.info-details {
+    flex: 1;
 }
 
-#word-emoji {
-  font-size: 58px;
-  line-height: 1.1;
-  animation: bob 2s ease-in-out infinite;
+.info-details h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+    color: #2f3542;
 }
 
-.word-pic small {
-  font-size: 17px;
-  font-weight: 800;
+.info-details p {
+    margin-bottom: 5px;
+    font-size: 0.95rem;
 }
 
-.letter-info {
-  flex: 1;
-  min-width: 0;
+.action-buttons {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
 }
 
-.letter-info h2 {
-  margin: 0 0 8px;
-  font-size: 30px;
-  line-height: 1;
+.btn-primary, .btn-secondary {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: opacity 0.2s;
 }
 
-.spec-tag {
-  display: inline-block;
-  padding: 4px 14px;
-  font-size: 15px;
-  font-weight: 800;
-  background: var(--sun);
-  border: 2px solid var(--ink);
-  border-radius: 20px;
+.btn-primary {
+    background: var(--accent-color);
+    color: white;
 }
 
-.btn-speak-large {
-  padding: 14px 22px;
-  background: var(--leaf);
-  font-size: 19px;
+.btn-secondary {
+    background: #ffa502;
+    color: white;
 }
 
-/* Bảng vẽ ô li tập tô */
-.canvas-workspace {
-  padding: 20px;
-  background: #fffdf0;
+.btn-primary:hover, .btn-secondary:hover {
+    opacity: 0.9;
 }
 
-.canvas-toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 14px;
+/* Writing Board */
+.writing-board-container {
+    background: #ffffff;
+    border: 2px solid #dfe4ea;
+    border-radius: 15px;
+    padding: 15px;
 }
 
-.toolbar-title {
-  font-size: 22px;
-  font-weight: 900;
+.board-header {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
-.tool-controls {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
+.board-header span:first-child {
+    font-weight: bold;
+    color: #2f3542;
 }
 
-.btn-tool {
-  padding: 8px 16px;
-  background: #fff;
-  font-size: 16px;
+.hint-text {
+    font-size: 0.85rem;
+    color: #747d8c;
 }
 
-.btn-tool.btn-clear {
-  background: #fecdd3;
+.canvas-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: #fff;
+    border: 1px solid #ced6e0;
+    border-radius: 8px;
 }
 
-.btn-tool.off {
-  background: #e2e8f0;
-  color: var(--mute);
+#writingCanvas {
+    display: block;
+    cursor: crosshair;
+    background-color: #fff9f9;
 }
 
-.canvas-container {
-  border: 4px solid var(--ink);
-  border-radius: 20px;
-  overflow: hidden;
-  background: #fff;
-  border-left: 12px solid var(--red);
-  box-shadow: inset 0 3px 0 var(--shadow-color);
+/* Quiz Styles */
+.quiz-container {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #f8efba;
+    padding: 25px;
+    border-radius: 15px;
+    border: 3px solid #f39c12;
 }
 
-#writeCanvas {
-  display: block;
-  width: 100%;
-  height: auto;
-  touch-action: none;
-  cursor: crosshair;
-}
-
-.canvas-hint {
-  margin-top: 12px;
-  text-align: center;
-  color: var(--mute);
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.instruction-card {
-  padding: 20px 24px;
-  background: #fefce8;
-}
-
-.video-card {
-  background: #fff;
-}
-
-.card-title {
-  font-size: 20px;
-  font-weight: 900;
-  margin-bottom: 8px;
-}
-
-.instruction-card p {
-  margin: 0;
-  font-size: 19px;
-  line-height: 1.5;
-}
-
-.video-frame {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  border: 4px solid var(--ink);
-  border-radius: 20px;
-  overflow: hidden;
-  background: #f1f5f9;
-}
-
-.video-frame iframe {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-
-/* ---------------- TRANG ĐỐ VUI ---------------- */
-.quiz-wrapper {
-  max-width: 720px;
-  margin: 0 auto;
+.quiz-header-status {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
 }
 
 .quiz-card {
-  padding: 30px;
-  background: #fff;
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.quiz-top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 22px;
+.quiz-card h3 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: #2c3e50;
 }
 
-.quiz-progress-text {
-  padding: 6px 16px;
-  background: var(--lilac);
-  border: 3px solid var(--ink);
-  border-radius: 20px;
-  font-size: 16px;
-  font-weight: 900;
-}
-
-.quiz-score-badge {
-  padding: 6px 16px;
-  background: var(--sun);
-  border: 3px solid var(--ink);
-  border-radius: 20px;
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.question-container h2 {
-  margin: 0 0 24px;
-  font-size: 28px;
-  line-height: 1.3;
-  text-align: center;
-}
-
-.options-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.quiz-opt-btn {
-  padding: 20px 16px;
-  background: #f8fafc;
-  font-size: 22px;
-  text-align: center;
-}
-
-.quiz-opt-btn:hover:not(:disabled) {
-  background: #e0f2fe;
-}
-
-.quiz-opt-btn.correct {
-  background: var(--leaf) !important;
-  animation: pop 0.5s;
-}
-
-.quiz-opt-btn.wrong {
-  background: #fecdd3 !important;
-  opacity: 0.8;
-  animation: shake 0.4s;
-}
-
-.quiz-opt-btn:disabled {
-  cursor: default;
-}
-
-.options-container .btn-restart {
-  grid-column: 1 / -1;
-  background: var(--leaf);
-  padding: 16px;
-  font-size: 22px;
-}
-
-.quiz-feedback {
-  margin-top: 22px;
-  padding: 14px;
-  border: 3px solid var(--ink);
-  border-radius: 18px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: 900;
-}
-
-.quiz-feedback.success {
-  background: #bbf7d0;
-}
-
-.quiz-feedback.error {
-  background: #fecdd3;
-}
-
-/* ---------------- MODAL & TOAST ---------------- */
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  background: rgba(31, 41, 55, 0.6);
-  backdrop-filter: blur(4px);
-}
-
-.modal-card {
-  width: 100%;
-  max-width: 360px;
-  padding: 28px;
-  text-align: center;
-}
-
-.modal-card h3 {
-  margin: 0;
-  font-size: 26px;
-}
-
-.modal-card input {
-  width: 100%;
-  margin: 16px 0;
-  padding: 14px;
-  font-size: 20px;
-  font-weight: 800;
-  border: 3px solid var(--ink);
-  border-radius: 18px;
-  outline: none;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 12px;
-}
-
-.modal-actions button {
-  flex: 1;
-  padding: 12px;
-  font-size: 18px;
-}
-
-.btn-modal-save { background: var(--leaf); }
-.btn-modal-cancel { background: #fff; }
-
-.toast {
-  position: fixed;
-  left: 50%;
-  top: 20px;
-  transform: translateX(-50%);
-  z-index: 200;
-  padding: 14px 26px;
-  max-width: 90vw;
-  background: var(--sun);
-  border: 4px solid var(--ink);
-  border-radius: 22px;
-  box-shadow: 0 6px 0 var(--ink);
-  font-size: 20px;
-  font-weight: 900;
-  text-align: center;
-  animation: pop 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
-
-/* ---------------- LINH VẬT VÀ KHUNG CẢNH ---------------- */
-.scene {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.sun {
-  position: absolute;
-  top: 12px;
-  right: 28px;
-  font-size: 80px;
-  animation: spin 45s linear infinite;
-}
-
-.fly {
-  position: absolute;
-  left: -140px;
-  font-size: 80px;
-  opacity: 0.9;
-  animation: drift var(--d) linear infinite;
-}
-
-.fly.big { font-size: 110px; }
-.fly.bird { font-size: 40px; opacity: 1; }
-
-.balloon {
-  position: absolute;
-  bottom: -90px;
-  font-size: 58px;
-  animation: rise var(--d) ease-in infinite;
-}
-
-.hills {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 100px;
-  background: 
-    radial-gradient(ellipse 55% 100% at 18% 100%, #86efac 97%, transparent 100%),
-    radial-gradient(ellipse 50% 100% at 72% 100%, #4ade80 97%, transparent 100%),
-    radial-gradient(ellipse 40% 80% at 100% 100%, #86efac 97%, transparent 100%);
-}
-
-.mascot {
-  position: fixed;
-  left: 16px;
-  bottom: 12px;
-  z-index: 60;
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  pointer-events: none;
-}
-
-.mascot-body {
-  font-size: 72px;
-  line-height: 1;
-  filter: drop-shadow(0 6px 0 rgba(31, 41, 55, 0.2));
-  animation: bob 2s ease-in-out infinite;
-}
-
-.mascot-body.jump { animation: jump 0.7s cubic-bezier(0.3, 1.6, 0.5, 1); }
-.mascot-body.shake { animation: shake 0.45s; }
-
-.bubble {
-  position: relative;
-  max-width: 240px;
-  margin-bottom: 36px;
-  padding: 10px 16px;
-  background: #fff;
-  border: 3px solid var(--ink);
-  border-radius: 20px;
-  font-size: 16px;
-  font-weight: 800;
-  line-height: 1.3;
-  box-shadow: 0 5px 0 var(--ink);
-}
-
-.bubble:empty { display: none; }
-
-.bubble::before {
-  content: "";
-  position: absolute;
-  left: -10px;
-  bottom: 12px;
-  width: 14px;
-  height: 14px;
-  background: #fff;
-  border-left: 3px solid var(--ink);
-  border-bottom: 3px solid var(--ink);
-  transform: rotate(45deg);
-}
-
-/* ---------------- HIỆU ỨNG CHUYỂN ĐỘNG (KEYFRAMES) ---------------- */
-.page-content:not(.hidden) {
-  animation: pageIn 0.45s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
-
-.pop {
-  animation: pop 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-}
-
-.confetti {
-  position: fixed;
-  top: -16px;
-  width: 12px;
-  height: 16px;
-  border-radius: 3px;
-  z-index: 300;
-  pointer-events: none;
-  animation: fall 2s ease-in forwards;
-}
-
-@keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes hop {
-  0%, 60%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-10px); }
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes drift {
-  to { transform: translateX(calc(100vw + 280px)); }
-}
-
-@keyframes rise {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(24px, -55vh); }
-  100% { transform: translate(-10px, -125vh); }
-}
-
-@keyframes pop {
-  0% { transform: scale(0.4) rotate(-10deg); opacity: 0; }
-  100% { transform: scale(1) rotate(0); opacity: 1; }
-}
-
-@keyframes pageIn {
-  from { transform: translateY(20px) scale(0.96); opacity: 0; }
-  to { transform: none; opacity: 1; }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20% { transform: translateX(-10px) rotate(-4deg); }
-  40% { transform: translateX(10px) rotate(4deg); }
-  60% { transform: translateX(-6px); }
-  80% { transform: translateX(6px); }
-}
-
-@keyframes jump {
-  0% { transform: translateY(0); }
-  35% { transform: translateY(-38px) scale(1.2) rotate(-8deg); }
-  70% { transform: translateY(0) scale(0.92); }
-  100% { transform: none; }
-}
-
-@keyframes writing {
-  0%, 100% { transform: rotate(-8deg); }
-  50% { transform: rotate(8deg) translateY(-6px); }
-}
-
-@keyframes fall {
-  to { transform: translate(var(--dx), 105vh) rotate(var(--r)); }
-}
-
-/* ---------------- ADAPTIVE RESPONSIVE ---------------- */
-@media (max-width: 880px) {
-  .top-header {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .main-nav {
-    order: 3;
-    width: 100%;
-    justify-content: center;
-  }
-  .nav-btn {
-    flex: 1;
-    padding: 10px 8px;
-    font-size: 15px;
-  }
-  .workspace-layout, .feature-cards {
-    grid-template-columns: 1fr;
-  }
-  .sidebar-letters {
-    position: static;
-    max-height: none;
-  }
-  .letters-grid {
-    grid-template-columns: repeat(auto-fill, minmax(58px, 1fr));
-    max-height: 200px;
-  }
-  .hero-banner {
-    padding: 24px;
-  }
-  .hero-illustration {
-    font-size: 64px;
-  }
-  .lesson-header-card {
-    flex-wrap: wrap;
-  }
-  .letter-display-box {
-    width: 90px;
-    height: 90px;
-    font-size: 58px;
-  }
+.options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
 }
 
 @media (max-width: 500px) {
-  body {
-    padding: 10px;
-    padding-bottom: 100px;
-  }
-  .options-container {
-    grid-template-columns: 1fr;
-  }
-  .hero-banner {
-    flex-direction: column;
-    text-align: center;
-  }
-  .btn-speak-large {
-    width: 100%;
-  }
-  .mascot-body {
-    font-size: 52px;
-  }
-  .bubble {
-    max-width: 160px;
-    font-size: 14px;
-    margin-bottom: 24px;
-    padding: 8px 12px;
-  }
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  *, .scene *, .mascot-body, .brand h1 span, .brand-badge, .card-icon, .hero-illustration, 
-  #word-emoji, .letter-btn.active, .badge-icon {
-    animation: none !important;
-    transition: none !important;
-  }
-  .confetti {
-    display: none;
-  }
+.option-btn {
+    padding: 15px;
+    border: 2px solid #dcdde1;
+    background: white;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+}
+
+.option-btn:hover {
+    background: #f1f2f6;
+    border-color: #718093;
+}
+
+.option-btn.correct {
+    background: #2ed573 !important;
+    color: white;
+    border-color: #2ed573;
+}
+
+.option-btn.incorrect {
+    background: #ff4757 !important;
+    color: white;
+    border-color: #ff4757;
+}
+
+.quiz-footer {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.quiz-result {
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+.quiz-result h3 {
+    color: #2ed573;
+    margin-bottom: 10px;
+    font-size: 1.8rem;
+}
+
+.quiz-result p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
 }
