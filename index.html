@@ -1,176 +1,180 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bé Tập Viết Chữ Cái Tiếng Việt</title>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=3.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bé Luyện Chữ Cùng Cánh Diều</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ -->
-    <div id="auth-screen" class="login-wrapper">
-        <div class="login-card">
-            <div class="brand-icon">✏️</div>
-            <div class="brand">
-                <h1>Bé Tập Viết Chữ</h1>
-                <p>Học viết chữ cái Tiếng Việt thật vui!</p>
-            </div>
+  <!-- 1. MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ -->
+  <div id="auth-screen" class="login-wrapper">
+    <div class="login-card">
+      <div class="brand-icon">✏️</div>
+      <div class="brand">
+        <h1>BÉ LUYỆN CHỮ</h1>
+        <p>Học vui - Viết đẹp chuẩn GDTH</p>
+      </div>
 
-            <div class="auth-tabs">
-                <button type="button" id="tab-login" class="tab-btn active" onclick="switchAuthTab('login')">Đăng Nhập</button>
-                <button type="button" id="tab-register" class="tab-btn" onclick="switchAuthTab('register')">Đăng Ký</button>
-            </div>
+      <div class="auth-tabs">
+        <button class="tab-btn active" onclick="switchAuthTab('login')">Đăng Nhập</button>
+        <button class="tab-btn" onclick="switchAuthTab('register')">Đăng Ký</button>
+      </div>
 
-            <form id="auth-form" onsubmit="handleAuthSubmit(event)">
-                <div class="role-switch">
-                    <button type="button" id="role-hs" class="role-btn active" onclick="selectRole('HS')">👶 Học Sinh</button>
-                    <button type="button" id="role-gv" class="role-btn" onclick="selectRole('GV')">👩‍🏫 Giáo Viên</button>
-                </div>
+      <div class="role-switch">
+        <button class="role-btn active" onclick="setRole('student')">👶 Học Sinh</button>
+        <button class="role-btn" onclick="setRole('teacher')">👩‍🏫 Giáo Viên / PH</button>
+      </div>
 
-                <div id="fullname-group" class="input-group hidden">
-                    <label for="reg-fullname">Họ và tên:</label>
-                    <input type="text" id="reg-fullname" placeholder="Nhập họ và tên...">
-                </div>
-
-                <div class="input-group">
-                    <label for="username">Tên đăng nhập:</label>
-                    <input type="text" id="username" placeholder="Nhập tên đăng nhập..." required>
-                </div>
-
-                <div class="input-group">
-                    <label for="password">Mật khẩu:</label>
-                    <input type="password" id="password" placeholder="Nhập mật khẩu..." required>
-                </div>
-
-                <button type="submit" id="btn-submit" class="btn-submit">🚀 Đăng Nhập Ngay</button>
-            </form>
-
-            <div id="auth-error" class="error-banner hidden"></div>
+      <form id="auth-form" onsubmit="handleAuth(event)">
+        <div class="input-group">
+          <label for="username">Tên của bé / Tài khoản:</label>
+          <input type="text" id="username" placeholder="Nhập tên của bé..." required>
         </div>
-    </div>
-
-    <!-- MÀN HÌNH CHÍNH (GIAO DIỆN HỌC TẬP) -->
-    <div id="main-screen" class="main-wrapper hidden">
-        <!-- HEADER THÔNG TIN NGƯỜI DÙNG & MENU BÀI HỌC -->
-        <header class="top-header">
-            <div class="user-info-card">
-                <div id="user-avatar" class="avatar-badge">👶</div>
-                <div>
-                    <span id="user-role-badge" class="role-tag">Học Sinh</span>
-                    <div class="name-display">
-                        <span id="user-display-name">Bé Minh Anh</span>
-                        <button class="btn-edit-inline" onclick="openEditNameModal()">✏️ Đổi tên</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- THANH ĐIỀU HƯỚNG TRANG CHỦ / BÀI HỌC / BÀI TẬP -->
-            <nav class="main-nav">
-                <button id="nav-home" class="nav-btn active" onclick="switchPage('home')">🏠 Trang Chủ</button>
-                <button id="nav-lesson" class="nav-btn" onclick="switchPage('lesson')">📚 Bài Học</button>
-                <button id="nav-exercise" class="nav-btn" onclick="switchPage('exercise')">📝 Bài Tập</button>
-            </nav>
-
-            <button class="btn-logout" onclick="handleLogout()">🚪 Đăng xuất</button>
-        </header>
-
-        <!-- 1. TRANG CHỦ (HOME PAGE) -->
-        <section id="page-home" class="page-content">
-            <div class="welcome-banner">
-                <div class="banner-text">
-                    <h2>Chào mừng <span id="home-user-name">Bé</span> đến với lớp tập viết! 🌟</h2>
-                    <p>Hãy chọn bài học để luyện tập viết 29 chữ cái Tiếng Việt nhé.</p>
-                </div>
-            </div>
-
-            <div class="quick-menu-grid">
-                <div class="menu-card card-blue" onclick="switchPage('lesson')">
-                    <div class="card-icon">📚</div>
-                    <h3>Thư Viện Bài Học</h3>
-                    <p>Xem video hướng dẫn 29 chữ cái Tiếng Việt chuẩn bộ giáo dục.</p>
-                    <button class="btn-card">Vào Học Ngay 👉</button>
-                </div>
-
-                <div class="menu-card card-orange" onclick="switchPage('exercise')">
-                    <div class="card-icon">📝</div>
-                    <h3>Thử Thách Bài Tập</h3>
-                    <p>Cùng ôn luyện kiến thức qua các câu hỏi trắc nghiệm chữ cái.</p>
-                    <button class="btn-card">Làm Bài Tập 👉</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2. TRANG BÀI HỌC (LESSON PAGE) -->
-        <section id="page-lesson" class="page-content hidden">
-            <div class="workspace-grid">
-                <aside class="alphabet-sidebar">
-                    <div class="sidebar-header">
-                        <h3>🎨 Chọn Chữ Cái</h3>
-                    </div>
-                    <div id="alphabet-container" class="alphabet-grid"></div>
-                </aside>
-
-                <main class="lesson-card">
-                    <div class="lesson-header">
-                        <div class="title-group">
-                            <span class="badge-icon">📝</span>
-                            <h2 id="current-letter-title">Bài học chữ A</h2>
-                        </div>
-                        <button class="btn-speech" onclick="speakCurrentLetter()">🔊 Nghe phát âm</button>
-                    </div>
-
-                    <div class="video-frame-container">
-                        <iframe id="youtube-player" src="" title="Hướng dẫn viết chữ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-
-                    <div class="lesson-guide">
-                        <div class="guide-title">📌 Hướng dẫn nét viết:</div>
-                        <p id="letter-description">Chữ a gồm 2 nét: Nét cong tròn khép kín và nét móc ngược phải.</p>
-                    </div>
-                </main>
-            </div>
-        </section>
-
-        <!-- 3. TRANG BÀI TẬP (EXERCISE PAGE) -->
-        <section id="page-exercise" class="page-content hidden">
-            <div class="exercise-container">
-                <div class="exercise-card">
-                    <div class="quiz-header">
-                        <h2>🎯 Trắc Nghiệm Nhận Biết Chữ Cái</h2>
-                        <span id="quiz-progress" class="quiz-badge">Câu 1/3</span>
-                    </div>
-
-                    <div class="quiz-body">
-                        <h3 id="quiz-question" class="question-title">Đang tải câu hỏi...</h3>
-                        <div id="quiz-options" class="options-grid"></div>
-                    </div>
-
-                    <div id="quiz-feedback" class="quiz-feedback hidden"></div>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <!-- MODAL ĐỔI TÊN -->
-    <div id="edit-name-modal" class="modal-backdrop hidden">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3>✏️ Cập Nhật Tên Hiển Thị</h3>
-            </div>
-            <div class="modal-body">
-                <label for="new-display-name">Tên mới của bạn:</label>
-                <input type="text" id="new-display-name" placeholder="Nhập tên mới...">
-            </div>
-            <div class="modal-footer">
-                <button class="btn-cancel" onclick="closeEditNameModal()">Hủy</button>
-                <button class="btn-save" onclick="saveNewName()">Lưu Lại</button>
-            </div>
+        <div class="input-group">
+          <label for="password">Mật khẩu:</label>
+          <input type="password" id="password" placeholder="Nhập mật khẩu..." required>
         </div>
+        <button type="submit" class="btn-submit">Bắt Đầu Học Ngay! 🚀</button>
+      </form>
+      
+      <div id="auth-error" class="error-banner hidden">Tài khoản hoặc mật khẩu chưa đúng!</div>
     </div>
+  </div>
 
-    <script src="js/data.js"></script>
-    <script src="js/main.js?v=3.0"></script>
+  <!-- 2. MÀN HÌNH CHÍNH (ĐÃ ĐĂNG NHẬP) -->
+  <div id="main-screen" class="main-wrapper hidden">
+    
+    <!-- THANH HEADER THÔNG TIN -->
+    <header class="top-header">
+      <div class="user-info-card">
+        <div class="avatar-badge">🐥</div>
+        <div>
+          <div class="name-display">
+            <span id="display-name">Bé An</span>
+            <button class="btn-edit-inline" onclick="openEditModal()">✏️ Đổi tên</button>
+          </div>
+          <span class="role-tag" id="display-role">Học Sinh</span>
+        </div>
+      </div>
+
+      <nav class="main-nav">
+        <button class="nav-btn active" onclick="showPage('home')">🏠 Trang Chủ</button>
+        <button class="nav-btn" onclick="showPage('lesson')">📚 Bài Học Chữ</button>
+        <button class="nav-btn" onclick="showPage('exercise')">🎮 Bài Tập Vui</button>
+      </nav>
+
+      <button class="btn-logout" onclick="handleLogout()">Đăng Xuất 🚪</button>
+    </header>
+
+    <!-- TRANG CHỦ -->
+    <main id="page-home">
+      <div class="welcome-banner">
+        <div class="banner-text">
+          <h2>Chào mừng bé đến với thế giới chữ viết! ✨</h2>
+          <p>Hôm nay chúng mình cùng luyện tập các nét chữ chuẩn đẹp nhé!</p>
+        </div>
+      </div>
+
+      <div class="quick-menu-grid">
+        <div class="menu-card card-blue" onclick="showPage('lesson')">
+          <div class="card-icon">📖</div>
+          <h3>Luyện Viết Chữ Cái</h3>
+          <p>Xem video hướng dẫn nét vẽ & quy chuẩn kỹ thuật 24 chữ cái.</p>
+          <button class="btn-card">Học Ngay ➔</button>
+        </div>
+
+        <div class="menu-card card-orange" onclick="showPage('exercise')">
+          <div class="card-icon">🎯</div>
+          <h3>Thử Thách Trắc Nghiệm</h3>
+          <p>Cùng ôn lại bài học qua các câu hỏi trắc nghiệm sinh động.</p>
+          <button class="btn-card">Chơi Ngay ➔</button>
+        </div>
+      </div>
+    </main>
+
+    <!-- TRANG BÀI HỌC (Bảng tra cứu quy chuẩn & Video) -->
+    <main id="page-lesson" class="hidden">
+      <div class="workspace-grid">
+        
+        <!-- SIDEBAR CHỌN CHỮ CÁI -->
+        <aside class="alphabet-sidebar">
+          <div class="sidebar-header">
+            <h3>🔤 Chọn Chữ Cái</h3>
+          </div>
+          <div class="alphabet-grid" id="alphabet-list">
+            <!-- Tự động load danh sách chữ cái từ JS -->
+          </div>
+        </aside>
+
+        <!-- NỘI DUNG BÀI HỌC -->
+        <section class="lesson-card">
+          <div class="lesson-header">
+            <div class="title-group">
+              <span class="badge-icon">✏️</span>
+              <h2 id="current-letter-title">Học Chữ A</h2>
+            </div>
+            <button class="btn-speech" id="btn-read-aloud" onclick="speakLetter()">🔊 Phát Âm</button>
+          </div>
+
+          <!-- FRAME VIDEO MÔ PHỎNG NÉT VẼ -->
+          <div class="video-frame-container">
+            <iframe id="lesson-video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Mô phỏng nét vẽ" frameborder="0" allowfullscreen></iframe>
+          </div>
+
+          <!-- BẢNG QUY CHUẨN KỸ THUẬT (SP076) -->
+          <div class="lesson-guide">
+            <div class="guide-title">📐 Quy chuẩn Kỹ thuật (Giáo trình SP076)</div>
+            <p><b>Độ cao chuẩn:</b> <span id="char-height">1 ô li (Cỡ vừa)</span></p>
+            <p><b>Nét cấu thành:</b> <span id="char-strokes">Nét cong kín + Nét móc ngược nhỏ</span></p>
+            <p style="margin-top: 6px;"><b>Cách viết:</b> <span id="char-guide">Đặt bút dưới đường kẻ 3 một chút, viết nét cong kín...</span></p>
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- TRANG BÀI TẬP TRẮC NGHIỆM -->
+    <main id="page-exercise" class="hidden">
+      <div class="exercise-container">
+        <div class="exercise-card">
+          <div class="quiz-header">
+            <h2>🎮 Thử Thách Ôn Tập</h2>
+            <div class="quiz-badge">Điểm: <span id="quiz-score">0</span> ⭐️</div>
+          </div>
+
+          <div class="question-title" id="quiz-question">Chữ "a" có độ cao bao nhiêu ô li?</div>
+          
+          <div class="options-grid" id="quiz-options">
+            <button class="quiz-opt-btn" onclick="checkAnswer(true)">1 Ô li</button>
+            <button class="quiz-opt-btn" onclick="checkAnswer(false)">2 Ô li</button>
+          </div>
+
+          <div id="quiz-feedback" class="quiz-feedback hidden"></div>
+        </div>
+      </div>
+    </main>
+
+  </div>
+
+  <!-- MODAL ĐỔI TÊN NGƯỜI DÙNG -->
+  <div id="edit-modal" class="modal-backdrop hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>✏️ Đổi Tên Hiển Thị</h3>
+      </div>
+      <div class="modal-body">
+        <label for="new-name-input">Tên mới của bé:</label>
+        <input type="text" id="new-name-input" placeholder="Nhập tên mới...">
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeEditModal()">Hủy</button>
+        <button class="btn-save" onclick="saveNewName()">Lưu Lại</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
