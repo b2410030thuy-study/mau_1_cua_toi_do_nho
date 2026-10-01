@@ -3,126 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Học Viết HP001 - Lớp 1</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <title>Học Viết Chữ Cái Tiếng Việt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css?v=2.0">
 </head>
 <body>
-    <div id="app">
-        <!-- MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ -->
-        <div id="login-screen" class="login-wrapper">
-            <div class="login-card">
-                <div class="brand">
-                    <div class="brand-icon">✏️</div>
-                    <h1 id="auth-title">BÉ TẬP VIẾT HP001</h1>
-                    <p id="auth-subtitle">Đăng nhập để bắt đầu luyện chữ</p>
-                </div>
 
-                <div class="auth-tabs">
-                    <button type="button" id="tab-login" class="tab-btn active" onclick="switchAuthMode('login')">Đăng Nhập</button>
-                    <button type="button" id="tab-register" class="tab-btn" onclick="switchAuthMode('register')">Đăng Ký Tài Khoản</button>
-                </div>
+    <!-- MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ -->
+    <div id="auth-screen" class="login-wrapper">
+        <div class="login-card">
+            <div class="brand-icon">✏️</div>
+            <div class="brand">
+                <h1>Bé Tập Viết Chữ</h1>
+                <p>Học viết chữ cái Tiếng Việt thật vui!</p>
+            </div>
 
+            <!-- TAB CHUYỂN ĐỔI CHẾ ĐỘ -->
+            <div class="auth-tabs">
+                <button type="button" id="tab-login" class="tab-btn active" onclick="switchAuthTab('login')">Đăng Nhập</button>
+                <button type="button" id="tab-register" class="tab-btn" onclick="switchAuthTab('register')">Đăng Ký</button>
+            </div>
+
+            <!-- FORM ĐĂNG NHẬP / ĐĂNG KÝ -->
+            <form id="auth-form" onsubmit="handleAuthSubmit(event)">
                 <div class="role-switch">
-                    <button type="button" id="btn-role-hs" class="role-btn active" onclick="selectRole('HS')">
-                        <span>👶</span> Học Sinh
-                    </button>
-                    <button type="button" id="btn-role-gv" class="role-btn" onclick="selectRole('GV')">
-                        <span>👩‍🏫</span> Giáo Viên
-                    </button>
+                    <button type="button" id="role-hs" class="role-btn active" onclick="selectRole('HS')">👶 Học Sinh</button>
+                    <button type="button" id="role-gv" class="role-btn" onclick="selectRole('GV')">👩‍🏫 Giáo Viên</button>
                 </div>
 
-                <form id="auth-form" onsubmit="handleAuthSubmit(event)">
-                    <div class="input-group hidden" id="group-fullname">
-                        <label for="fullname">Họ và tên</label>
-                        <input type="text" id="fullname" placeholder="Nhập tên bé hoặc giáo viên">
-                    </div>
-
-                    <div class="input-group">
-                        <label id="label-username" for="username">Tên tài khoản (hoặc Mã số)</label>
-                        <input type="text" id="username" placeholder="Nhập tên tài khoản" required>
-                    </div>
-
-                    <div class="input-group">
-                        <label for="password">Mật khẩu</label>
-                        <input type="password" id="password" placeholder="Nhập mật khẩu" required>
-                    </div>
-
-                    <button type="submit" id="btn-auth-submit" class="btn-submit">Đăng Nhập Ngay ✨</button>
-                </form>
-
-                <div id="auth-msg" class="error-banner hidden"></div>
-            </div>
-        </div>
-
-        <!-- MÀN HÌNH CHÍNH -->
-        <div id="main-screen" class="main-wrapper hidden">
-            <header class="top-header">
-                <div class="user-info-card">
-                    <div class="avatar-badge" id="avatar-icon">👶</div>
-                    <div class="user-meta">
-                        <span id="user-role-tag" class="role-tag">Học Sinh</span>
-                        <div class="name-display">
-                            <span id="user-display-name">Bé Minh Anh</span>
-                            <button onclick="openEditNameModal()" class="btn-edit-inline" title="Đổi tên hiển thị">✏️ Đổi tên</button>
-                        </div>
-                    </div>
+                <div id="fullname-group" class="input-group hidden">
+                    <label for="reg-fullname">Họ và tên của bé/thầy cô:</label>
+                    <input type="text" id="reg-fullname" placeholder="Nhập họ và tên...">
                 </div>
-                <button onclick="logout()" class="btn-logout">Đăng xuất 🚪</button>
-            </header>
 
-            <div class="workspace-grid">
-                <aside class="alphabet-sidebar">
-                    <div class="sidebar-header">
-                        <h3>🔤 Bảng Chữ Cái</h3>
-                    </div>
-                    <div id="alphabet-list" class="alphabet-grid"></div>
-                </aside>
+                <div class="input-group">
+                    <label for="username">Tên đăng nhập:</label>
+                    <input type="text" id="username" placeholder="Nhập tên đăng nhập..." required>
+                </div>
 
-                <main class="lesson-area">
-                    <div class="lesson-card">
-                        <div class="lesson-header">
-                            <div class="title-group">
-                                <span class="badge-icon">📖</span>
-                                <h2 id="current-letter-title">Bài học chữ A</h2>
-                            </div>
-                            <button onclick="speakLetter()" class="btn-speech">🔊 Nghe phát âm</button>
-                        </div>
+                <div class="input-group">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" placeholder="Nhập mật khẩu..." required>
+                </div>
 
-                        <div class="video-frame-container">
-                            <iframe id="letter-video" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                        </div>
+                <button type="submit" id="btn-submit" class="btn-submit">🚀 Đăng Nhập Ngay</button>
+            </form>
 
-                        <div class="lesson-guide">
-                            <div class="guide-title">💡 Hướng dẫn nét vẽ:</div>
-                            <p id="video-caption">Hãy xem kỹ từng nét bút trong video và luyện viết theo nhé!</p>
-                        </div>
-                    </div>
-                </main>
-            </div>
+            <div id="auth-error" class="error-banner hidden"></div>
         </div>
     </div>
 
-    <!-- MODAL ĐỔI TÊN -->
+    <!-- MÀN HÌNH CHÍNH (GIAO DIỆN BÀI HỌC) -->
+    <div id="main-screen" class="main-wrapper hidden">
+        <!-- BAR THÔNG TIN NGƯỜI DÙNG -->
+        <header class="top-header">
+            <div class="user-info-card">
+                <div id="user-avatar" class="avatar-badge">👶</div>
+                <div>
+                    <span id="user-role-badge" class="role-tag">Học Sinh</span>
+                    <div class="name-display">
+                        <span id="user-display-name">Bé Minh Anh</span>
+                        <button class="btn-edit-inline" onclick="openEditNameModal()">✏️ Đổi tên</button>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-logout" onclick="handleLogout()">🚪 Đăng xuất</button>
+        </header>
+
+        <!-- KHU VỰC HỌC TẬP -->
+        <div class="workspace-grid">
+            <!-- SIDEBAR 29 CHỮ CÁI -->
+            <aside class="alphabet-sidebar">
+                <div class="sidebar-header">
+                    <h3>🎨 Chọn Chữ Cái</h3>
+                </div>
+                <div id="alphabet-container" class="alphabet-grid">
+                    <!-- Danh sách chữ cái sinh ra từ JS -->
+                </div>
+            </aside>
+
+            <!-- KHUNG HIỂN THỊ BÀI HỌC -->
+            <main class="lesson-card">
+                <div class="lesson-header">
+                    <div class="title-group">
+                        <span class="badge-icon">📝</span>
+                        <h2 id="current-letter-title">Bài học chữ A</h2>
+                    </div>
+                    <button class="btn-speech" onclick="speakCurrentLetter()">🔊 Nghe phát âm</button>
+                </div>
+
+                <!-- VIDEO YOUTUBE HƯỚNG DẪN -->
+                <div class="video-frame-container">
+                    <iframe id="youtube-player" src="" title="Hướng dẫn viết chữ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+
+                <!-- MÔ TẢ NÉT VIẾT -->
+                <div class="lesson-guide">
+                    <div class="guide-title">📌 Hướng dẫn nét viết:</div>
+                    <p id="letter-description">Chữ a gồm 2 nét: Nét cong tròn khép kín và nét móc ngược phải.</p>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL ĐỔI TÊN HỌC SINH -->
     <div id="edit-name-modal" class="modal-backdrop hidden">
         <div class="modal-box">
             <div class="modal-header">
-                <h3>✏️ Đổi Tên Hiển Thị</h3>
+                <h3>✏️ Cập Nhật Tên Hiển Thị</h3>
             </div>
             <div class="modal-body">
-                <label for="new-name-input">Tên mới của bạn:</label>
-                <input type="text" id="new-name-input" placeholder="Ví dụ: Bé Bảo Nam" maxlength="30">
+                <label for="new-display-name">Tên mới của bạn:</label>
+                <input type="text" id="new-display-name" placeholder="Nhập tên mới...">
             </div>
             <div class="modal-footer">
-                <button onclick="closeEditNameModal()" class="btn-cancel">Hủy</button>
-                <button onclick="saveNewName()" class="btn-save">Lưu lại ✨</button>
+                <button class="btn-cancel" onclick="closeEditNameModal()">Hủy</button>
+                <button class="btn-save" onclick="saveNewName()">Lưu Lại</button>
             </div>
         </div>
     </div>
 
+    <!-- SCRIPT CHÍNH -->
     <script src="js/data.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
