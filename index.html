@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Luyện Viết HP001 - Lớp 1</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 1. MÀN HÌNH ĐĂNG NHẬP -->
+        <div id="login-screen" class="card">
+            <div class="brand-header">
+                <h1>✍️ BÉ TẬP VIẾT HP001</h1>
+                <p class="subtitle">Hành trang luyện chữ đẹp cho học sinh Lớp 1</p>
+            </div>
+            
+            <div class="role-selector">
+                <button type="button" class="btn-role active" id="btn-role-hs" onclick="selectRole('HS')">HỌC SINH</button>
+                <button type="button" class="btn-role" id="btn-role-gv" onclick="selectRole('GV')">GIÁO VIÊN</button>
+            </div>
+
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label id="label-username" for="username">Mã số học sinh:</label>
+                    <input type="text" id="username" value="HS001" placeholder="Nhập mã số" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Mật khẩu:</label>
+                    <input type="password" id="password" value="123456" placeholder="Nhập mật khẩu" required>
+                </div>
+                <button type="submit" class="btn-primary">ĐĂNG NHẬP HỆ THỐNG</button>
+            </form>
+            <p id="login-error" class="error-msg"></p>
+        </div>
+
+        <!-- 2. MÀN HÌNH CHÍNH (ĐÃ CÓ ĐỔI TÊN THÔNG MINH) -->
+        <div id="main-screen" class="card-main hidden">
+            <header class="app-header">
+                <div class="user-profile-box">
+                    <span class="avatar-icon">👤</span>
+                    <div class="user-details">
+                        <span id="user-role-badge" class="badge">Học Sinh</span>
+                        <!-- Khu vực hiển thị và đổi tên -->
+                        <div class="name-edit-group">
+                            <span id="user-display-name">Bé Minh Anh</span>
+                            <button onclick="openEditNameModal()" class="btn-edit-name" title="Đổi tên hiển thị">✏️ Đổi tên</button>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="logout()" class="btn-secondary">Đăng xuất</button>
+            </header>
+
+            <div class="workspace">
+                <!-- Cột trái: Bảng chọn 29 chữ cái -->
+                <aside class="sidebar">
+                    <h3>Bảng chữ cái</h3>
+                    <div id="alphabet-list" class="grid-letters">
+                        <!-- Dữ liệu chữ cái sinh ra ở đây -->
+                    </div>
+                </aside>
+
+                <!-- Cột phải: Khung hiển thị chính -->
+                <main class="main-content">
+                    <div class="video-box">
+                        <div class="video-header">
+                            <h2 id="current-letter-title">Bài học chữ a</h2>
+                            <button onclick="speakLetter()" class="btn-audio">🔊 Nghe âm</button>
+                        </div>
+                        
+                        <div class="video-container">
+                            <iframe id="letter-video" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        </div>
+                        
+                        <div class="teacher-note">
+                            <p id="video-caption">Hãy nhìn kỹ nét viết trên video và thực hành theo nhé!</p>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ĐỔI TÊN NGƯỜI DÙNG -->
+    <div id="edit-name-modal" class="modal hidden">
+        <div class="modal-content">
+            <h3>Cập nhật tên hiển thị</h3>
+            <p>Nhập tên mới bạn muốn hiển thị trên trang web:</p>
+            <input type="text" id="new-name-input" placeholder="Ví dụ: Bé Bảo Nam" maxlength="30">
+            <div class="modal-actions">
+                <button onclick="saveNewName()" class="btn-primary-small">Lưu lại</button>
+                <button onclick="closeEditNameModal()" class="btn-secondary-small">Hủy</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
