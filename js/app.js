@@ -1,521 +1,367 @@
-// ==========================================
-// 1. DỮ LIỆU 29 CHỮ CÁI TIẾNG VIỆT CHUẨN SP076
-// ==========================================
-const alphabetData = [
-  {
-    letter: "a",
-    title: "Chữ a (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Nét cong kín + Nét móc ngược nhỏ",
-    guide: "Đặt bút dưới đường kẻ 3 một chút, viết nét cong kín từ phải sang trái. Lia bút lên đường kẻ 3 viết nét móc ngược nhỏ sát nét cong kín, dừng bút ở đường kẻ 2."
-  },
-  {
-    letter: "ă",
-    title: "Chữ ă (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Chữ 'a' + Dấu nón ngược (nét cong dưới)",
-    guide: "Viết chữ 'a' hoàn chỉnh. Lia bút lên trên đường kẻ 3 viết nét cong dưới nhỏ cân đối trên đầu chữ a."
-  },
-  {
-    letter: "â",
-    title: "Chữ â (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Chữ 'a' + Dấu mũ (2 nét xiên ngắn)",
-    guide: "Viết chữ 'a' hoàn chỉnh. Lia bút lên trên đường kẻ 3, viết nét xiên trái ngắn nối liền nét xiên phải ngắn tạo dấu mũ cân đối."
-  },
-  {
-    letter: "b",
-    title: "Chữ b (thường)",
-    height: "2.5 ô li (Cỡ vừa)",
-    strokes: "Nét khuyết trên + Nét thắt",
-    guide: "Đặt bút ở đường kẻ 2, viết nét khuyết trên cao 2.5 ô li. Đến điểm dừng bút rê tiếp nét thắt ở đường kẻ 3 rồi dừng bút."
-  },
-  {
-    letter: "c",
-    title: "Chữ c (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Nét cong trái",
-    guide: "Đặt bút dưới đường kẻ 3 một chút, viết nét cong trái, dừng bút ở khoảng giữa đường kẻ 1 và đường kẻ 2."
-  },
-  {
-    letter: "d",
-    title: "Chữ d (thường)",
-    height: "2 ô li (Cỡ vừa)",
-    strokes: "Nét cong kín + Nét móc ngược dài",
-    guide: "Viết nét cong kín cao 1 ô li. Lia bút lên đường kẻ 5 viết nét móc ngược dài cao 2 ô li áp sát nét cong kín, dừng ở đường kẻ 2."
-  },
-  {
-    letter: "đ",
-    title: "Chữ đ (thường)",
-    height: "2 ô li (Cỡ vừa)",
-    strokes: "Chữ 'd' + Nét ngang ngắn",
-    guide: "Viết chữ 'd' hoàn chỉnh. Lia bút lên đường kẻ 4 viết nét ngang ngắn cắt ngang nét móc ngược dài."
-  },
-  {
-    letter: "e",
-    title: "Chữ e (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Nét cong xéo liền nét cong trái",
-    guide: "Đặt bút trên đường kẻ 1 một chút, viết nét cong xéo lên rồi chuyển hướng viết nét cong trái, dừng bút ở đường kẻ 2."
-  },
-  {
-    letter: "ê",
-    title: "Chữ ê (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Chữ 'e' + Dấu mũ",
-    guide: "Viết chữ 'e' hoàn chỉnh. Lia bút lên trên đường kẻ 3 viết dấu mũ nhỏ cân đối đỉnh chữ e."
-  },
-  {
-    letter: "g",
-    title: "Chữ g (thường)",
-    height: "2.5 ô li (Cỡ vừa)",
-    strokes: "Nét cong kín + Nét khuyết dưới",
-    guide: "Viết nét cong kín cao 1 ô li. Lia bút lên đường kẻ 3 viết nét khuyết dưới sâu 1.5 ô li xuống dưới đường kẻ 1, dừng ở đường kẻ 2."
-  },
-  {
-    letter: "h",
-    title: "Chữ h (thường)",
-    height: "2.5 ô li (Cỡ vừa)",
-    strokes: "Nét khuyết trên + Nét móc hai đầu",
-    guide: "Đặt bút ở đường kẻ 2, viết nét khuyết trên cao 2.5 ô li. Từ điểm dừng bút rê ngược lên đường kẻ 2 viết nét móc hai đầu."
-  },
-  {
-    letter: "i",
-    title: "Chữ i (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Nét hất + Nét móc ngược + Dấu chấm",
-    guide: "Đặt bút ở đường kẻ 2 viết nét hất lên đường kẻ 3. Kéo thẳng xuống viết nét móc ngược nhỏ. Lia bút chấm 1 chấm nhỏ trên đầu."
-  },
-  {
-    letter: "k",
-    title: "Chữ k (thường)",
-    height: "2.5 ô li (Cỡ vừa)",
-    strokes: "Nét khuyết trên + Nét thắt giữa",
-    guide: "Viết nét khuyết trên cao 2.5 ô li. Rê bút lên đường kẻ 2 viết nét thắt giữa rồi móc ngược ra, dừng bút ở đường kẻ 2."
-  },
-  {
-    letter: "l",
-    title: "Chữ l (thường)",
-    height: "2.5 ô li (Cỡ vừa)",
-    strokes: "Nét khuyết trên liền nét móc ngược",
-    guide: "Đặt bút ở đường kẻ 2, viết nét khuyết trên cao 2.5 ô li, đến chân nét kéo rộng ra viết nét móc ngược, dừng ở đường kẻ 2."
-  },
-  {
-    letter: "m",
-    title: "Chữ m (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "2 Nét móc xuôi + 1 Nét móc hai đầu",
-    guide: "Đặt bút giữa đường kẻ 2 và 3, viết nét móc xuôi thứ 1. Rê bút viết nét móc xuôi thứ 2 rộng hơn, rê tiếp viết nét móc hai đầu."
-  },
-  {
-    letter: "n",
-    title: "Chữ n (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Nét móc xuôi + Nét móc hai đầu",
-    guide: "Đặt bút giữa đường kẻ 2 và 3, viết nét móc xuôi nhỏ. Rê bút lên đường kẻ 2 viết tiếp nét móc hai đầu, dừng ở đường kẻ 2."
-  },
-  {
-    letter: "o",
-    title: "Chữ o (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Nét cong kín",
-    guide: "Đặt bút dưới đường kẻ 3 một chút, đi nét tròn cong kín từ trái sang phải rồi trở về điểm bắt đầu."
-  },
-  {
-    letter: "ô",
-    title: "Chữ ô (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Chữ 'o' + Dấu mũ",
-    guide: "Viết chữ 'o' tròn đều. Lia bút lên trên đường kẻ 3 viết dấu mũ nhọn cân đối."
-  },
-  {
-    letter: "ơ",
-    title: "Chữ ơ (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Chữ 'o' + Dấu râu",
-    guide: "Viết chữ 'o' tròn đều. Lia bút viết nét râu nhỏ ở đường kẻ 3 phía bên phải chữ o."
-  },
-  {
-    letter: "p",
-    title: "Chữ p (thường)",
-    height: "2 ô li (Cỡ vừa)",
-    strokes: "Nét hất + Nét thẳng + Nét móc hai đầu",
-    guide: "Đặt bút ở đường kẻ 2 hất lên đường kẻ 3. Kéo thẳng xuống sâu 1 ô li dưới đường kẻ 1. Rê bút viết nét móc hai đầu."
-  },
-  {
-    letter: "q",
-    title: "Chữ q (thường)",
-    height: "2 ô li (Cỡ vừa)",
-    strokes: "Nét cong kín + Nét thẳng đứng",
-    guide: "Viết nét cong kín cao 1 ô li. Lia bút lên đường kẻ 3 kéo nét thẳng đứng dài 2 ô li xuống dưới đường kẻ 1."
-  },
-  {
-    letter: "r",
-    title: "Chữ r (thường)",
-    height: "1.25 ô li (Cỡ vừa)",
-    strokes: "Nét thắt + Nét móc ngược",
-    guide: "Đặt bút ở đường kẻ 1, viết nét thắt hơi nhô qua đường kẻ 3 một chút, đưa sang phải rồi hạ xuống nét móc ngược."
-  },
-  {
-    letter: "s",
-    title: "Chữ s (thường)",
-    height: "1.25 ô li (Cỡ vừa)",
-    strokes: "Nét thắt + Nét cong xoắn",
-    guide: "Đặt bút ở đường kẻ 1, viết nét xoắn hơi qua đường kẻ 3, lượn cong xuống tạo thân chữ s, dừng bút xoắn nhẹ."
-  },
-  {
-    letter: "t",
-    title: "Chữ t (thường)",
-    height: "1.5 ô li (Cỡ vừa)",
-    strokes: "Nét hất + Nét móc ngược cao + Nét ngang",
-    guide: "Đặt bút ở đường kẻ 2 viết nét hất. Kéo thẳng từ giữa đường kẻ 3 và 4 xuống nét móc ngược. Viết nét ngang ngắn ở đường kẻ 3."
-  },
-  {
-    letter: "u",
-    title: "Chữ u (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Nét hất + Nét móc ngược rộng + Nét móc ngược nhỏ",
-    guide: "Viết nét hất từ đường kẻ 2. Viết nét móc ngược thứ nhất rộng 1.5 ô li. Rê bút lên đường kẻ 3 viết nét móc ngược nhỏ áp sát."
-  },
-  {
-    letter: "ư",
-    title: "Chữ ư (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Chữ 'u' + Dấu râu",
-    guide: "Viết chữ 'u' hoàn chỉnh. Lia bút lên nét móc thứ hai ở đường kẻ 3 viết một nét râu nhỏ."
-  },
-  {
-    letter: "v",
-    title: "Chữ v (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Nét móc hai đầu + Nét thắt",
-    guide: "Đặt bút giữa đường kẻ 2 và 3 viết nét móc hai đầu. Lượn lên đường kẻ 3 làm nét thắt nhỏ dừng bút."
-  },
-  {
-    letter: "x",
-    title: "Chữ x (thường)",
-    height: "1 ô li (Cỡ vừa)",
-    strokes: "Nét cong phải + Nét cong trái lưng chạm nhau",
-    guide: "Viết nét cong phải dừng bút. Lia bút sang phải viết nét cong trái chạm lưng vào nét cong vừa viết."
-  },
-  {
-    letter: "y",
-    title: "Chữ y (thường)",
-    height: "2.5 ô li (Cỡ vừa)",
-    strokes: "Nét hất + Nét móc hai đầu rộng + Nét khuyết dưới",
-    guide: "Viết nét hất rồi nét móc hai đầu rộng giống chữ u. Lia bút lên đường kẻ 3 viết nét khuyết dưới dài 2.5 ô li."
-  }
-];
-
-// DỮ LIỆU BÀI TẬP TRẮC NGHIỆM
-const quizData = [
-  {
-    question: "Chữ 'a' thường (cỡ vừa) có độ cao chuẩn là bao nhiêu ô li?",
-    options: [
-      { text: "1 Ô li", correct: true },
-      { text: "2 Ô li", correct: false },
-      { text: "2.5 Ô li", correct: false },
-      { text: "3 Ô li", correct: false }
-    ]
-  },
-  {
-    question: "Chữ cái nào sau đây gồm có 'Nét khuyết trên' và 'Nét thắt'?",
-    options: [
-      { text: "Chữ c", correct: false },
-      { text: "Chữ b", correct: true },
-      { text: "Chữ d", correct: false },
-      { text: "Chữ o", correct: false }
-    ]
-  },
-  {
-    question: "Nét khuyết dưới có trong chữ cái nào dưới đây?",
-    options: [
-      { text: "Chữ h và Chữ k", correct: false },
-      { text: "Chữ g và Chữ y", correct: true },
-      { text: "Chữ a và Chữ c", correct: false },
-      { text: "Chữ m và Chữ n", correct: false }
-    ]
-  }
-];
-
-// BIẾN TRẠNG THÁI
-let currentLetter = alphabetData[0];
+// Khởi tạo các biến trạng thái
+let currentUser = null;
+let currentRole = 'student';
+let currentLetter = ALPHABET[0];
 let currentQuizIndex = 0;
 let userScore = 0;
-let userRole = 'student';
+let learnedLetters = new Set();
 
-// BIẾN CANVAS VẼ TƯƠNG TÁC
+// Canvas context
 let canvas, ctx;
 let isDrawing = false;
-let canvasHistory = [];
+let history = [];
+let showGuide = true;
 
-// ==========================================
-// 2. KHỞI TẠO ỨNG DỤNG
-// ==========================================
-document.addEventListener("DOMContentLoaded", () => {
-  renderAlphabetGrid();
-  loadLetterData(alphabetData[0]);
-  loadQuizQuestion();
+window.addEventListener('DOMContentLoaded', () => {
   initCanvas();
+  renderAlphabet();
+  checkSession();
 });
 
-// Render danh sách 29 chữ cái
-function renderAlphabetGrid() {
-  const gridContainer = document.getElementById("alphabet-list");
-  if (!gridContainer) return;
+// Chuyển đổi Role Đăng nhập
+function setRole(role) {
+  currentRole = role;
+  document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+}
 
-  gridContainer.innerHTML = "";
-  alphabetData.forEach((item, index) => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = `letter-btn ${index === 0 ? 'active' : ''}`;
-    btn.innerText = item.letter;
-    btn.onclick = () => {
-      document.querySelectorAll(".letter-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      loadLetterData(item);
-    };
-    gridContainer.appendChild(btn);
+// Xử lý Xát thực / Đăng nhập
+function handleAuth(e) {
+  e.preventDefault();
+  const username = document.getElementById('username').value.trim();
+  const pin = document.getElementById('pin').value.trim();
+
+  if (!username || pin.length !== 4) {
+    showAuthError('Vui lòng nhập tên và mã PIN 4 số!');
+    return;
+  }
+
+  currentUser = { name: username, role: currentRole, pin: pin };
+  localStorage.setItem('user_session', JSON.stringify(currentUser));
+  
+  showMainScreen();
+  showToast(`Chào mừng ${username} đến với lớp học! 🎉`);
+}
+
+function showAuthError(msg) {
+  const errEl = document.getElementById('auth-error');
+  errEl.textContent = msg;
+  errEl.classList.remove('hidden');
+}
+
+function checkSession() {
+  const saved = localStorage.getItem('user_session');
+  if (saved) {
+    currentUser = JSON.parse(saved);
+    showMainScreen();
+  }
+}
+
+function showMainScreen() {
+  document.getElementById('auth-screen').classList.add('hidden');
+  document.getElementById('main-screen').classList.remove('hidden');
+  
+  document.getElementById('display-name').textContent = currentUser.name;
+  document.getElementById('home-name').textContent = currentUser.name;
+  document.getElementById('display-role').textContent = currentUser.role === 'student' ? 'Học Sinh' : 'Giáo Viên';
+  
+  showPage('home');
+  renderBadges();
+}
+
+function handleLogout() {
+  localStorage.removeItem('user_session');
+  location.reload();
+}
+
+// Điều hướng trang
+function showPage(pageId) {
+  document.querySelectorAll('.page-content').forEach(p => p.classList.add('hidden'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  
+  document.getElementById(`page-${pageId}`).classList.remove('hidden');
+  document.querySelector(`[data-page="${pageId}"]`)?.classList.add('active');
+
+  if (pageId === 'lesson') {
+    selectLetter(currentLetter.id);
+  } else if (pageId === 'exercise') {
+    loadQuiz();
+  }
+}
+
+// Render danh sách chữ cái
+function renderAlphabet() {
+  const container = document.getElementById('alphabet-list');
+  if (!container) return;
+  container.innerHTML = '';
+
+  ALPHABET.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = `letter-btn ${learnedLetters.has(item.id) ? 'done' : ''}`;
+    btn.textContent = item.letter;
+    btn.onclick = () => selectLetter(item.id);
+    btn.id = `btn-letter-${item.id}`;
+    container.appendChild(btn);
   });
 }
 
-// Cập nhật thông tin chữ cái được chọn
-function loadLetterData(data) {
-  currentLetter = data;
-  
-  document.getElementById("big-letter-display").innerText = data.letter;
-  document.getElementById("current-letter-title").innerText = `Học ${data.title}`;
-  document.getElementById("char-height").innerText = `📐 Độ cao: ${data.height}`;
-  document.getElementById("char-strokes").innerText = `✏️ ${data.strokes}`;
-  document.getElementById("char-guide").innerText = data.guide;
+// Chọn chữ cái bài học
+function selectLetter(id) {
+  const item = ALPHABET.find(l => l.id === id) || ALPHABET[0];
+  currentLetter = item;
 
-  // Xóa bảng ô li khi chuyển chữ mới
+  document.querySelectorAll('.letter-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`btn-letter-${id}`)?.classList.add('active');
+
+  document.getElementById('big-letter').textContent = item.letter;
+  document.getElementById('word-emoji').textContent = item.emoji;
+  document.getElementById('word-text').textContent = item.word;
+  document.getElementById('letter-title').textContent = `Chữ ${item.letter}`;
+  document.getElementById('letter-height').textContent = item.height;
+  document.getElementById('letter-desc').textContent = item.desc;
+  document.getElementById('video').src = item.video;
+
+  // Đánh dấu đã học
+  learnedLetters.add(item.id);
+  document.getElementById('practice-count').textContent = learnedLetters.size;
+  renderBadges();
   clearCanvas();
 }
 
-// ==========================================
-// 3. CANVAS TẬP VIẾT VỚI DÒNG KẺ Ô LI
-// ==========================================
+// Nghe âm thanh phát âm
+function speakLetter() {
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(currentLetter.letter);
+    utterance.lang = 'vi-VN';
+    utterance.rate = 0.8;
+    window.speechSynthesis.speak(utterance);
+    triggerMascotAnim('jump', `Âm "${currentLetter.letter}" nè bé!`);
+  }
+}
+
+// Bảng tập tô Canvas
 function initCanvas() {
-  canvas = document.getElementById("writeCanvas");
+  canvas = document.getElementById('writeCanvas');
   if (!canvas) return;
-  ctx = canvas.getContext("2d");
+  ctx = canvas.getContext('2d');
 
-  // Vẽ lưới ô li ban đầu
+  // Sự kiện chuột/Cảm ứng
+  canvas.addEventListener('mousedown', startDrawing);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stopDrawing);
+  canvas.addEventListener('mouseleave', stopDrawing);
+
+  canvas.addEventListener('touchstart', handleTouchStart);
+  canvas.addEventListener('touchmove', handleTouchMove);
+  canvas.addEventListener('touchend', stopDrawing);
+
   drawGrid();
-
-  // Sự kiện Chuột
-  canvas.addEventListener("mousedown", startDrawing);
-  canvas.addEventListener("mousemove", draw);
-  canvas.addEventListener("mouseup", stopDrawing);
-  canvas.addEventListener("mouseleave", stopDrawing);
-
-  // Sự kiện Cảm ứng (Điện thoại/iPad)
-  canvas.addEventListener("touchstart", (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    const rect = canvas.getBoundingClientRect();
-    startDrawing({ clientX: touch.clientX, clientY: touch.clientY, rect });
-  });
-
-  canvas.addEventListener("touchmove", (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    draw({ clientX: touch.clientX, clientY: touch.clientY });
-  });
-
-  canvas.addEventListener("touchend", stopDrawing);
 }
 
 function drawGrid() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   
-  // Vẽ nền ô li màu xanh nhạt chuẩn vở bài tập
-  const gridSize = 30; // Kích thước mỗi ô vuông
+  // Vẽ đường kẻ ô li
+  ctx.strokeStyle = '#bfdbfe';
   ctx.lineWidth = 1;
-
-  for (let x = 0; x <= canvas.width; x += gridSize) {
+  for (let y = 0; y < canvas.height; y += 30) {
     ctx.beginPath();
-    ctx.strokeStyle = (x % (gridSize * 5) === 0) ? '#a5d6a7' : '#e8f5e9';
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, canvas.height);
-    ctx.stroke();
-  }
-
-  for (let y = 0; y <= canvas.height; y += gridSize) {
-    ctx.beginPath();
-    ctx.strokeStyle = (y % (gridSize * 5) === 0) ? '#a5d6a7' : '#e8f5e9';
     ctx.moveTo(0, y);
     ctx.lineTo(canvas.width, y);
     ctx.stroke();
   }
 
-  // Lưu trạng thái lưới ban đầu
-  saveCanvasState();
+  // Chữ mẫu nét mờ
+  if (showGuide && currentLetter) {
+    ctx.save();
+    ctx.font = 'bold 160px Mali, sans-serif';
+    ctx.fillStyle = 'rgba(203, 213, 225, 0.6)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(currentLetter.letter, canvas.width / 2, canvas.height / 2);
+    ctx.restore();
+  }
 }
 
 function startDrawing(e) {
   isDrawing = true;
-  const rect = canvas.getBoundingClientRect();
-  const x = (e.clientX || e.rect.left) - rect.left;
-  const y = (e.clientY || e.rect.top) - rect.top;
-
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.lineWidth = 6;
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  ctx.strokeStyle = "#ff4757"; // Nét mực bút đỏ tươi cho trẻ dễ nhìn
+  saveState();
+  draw(e);
 }
 
 function draw(e) {
   if (!isDrawing) return;
   const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+  const x = (e.clientX || e.touches[0].clientX) - rect.left;
+  const y = (e.clientY || e.touches[0].clientY) - rect.top;
+
+  ctx.lineWidth = 12;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.strokeStyle = '#ff4757';
 
   ctx.lineTo(x, y);
   ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(x, y);
 }
 
 function stopDrawing() {
   if (isDrawing) {
     isDrawing = false;
-    ctx.closePath();
-    saveCanvasState();
+    ctx.beginPath();
   }
 }
 
-function saveCanvasState() {
-  if (canvasHistory.length >= 10) canvasHistory.shift();
-  canvasHistory.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+function handleTouchStart(e) {
+  e.preventDefault();
+  startDrawing(e.touches[0]);
+}
+
+function handleTouchMove(e) {
+  e.preventDefault();
+  draw(e.touches[0]);
 }
 
 function clearCanvas() {
-  canvasHistory = [];
+  history = [];
   drawGrid();
 }
 
+function saveState() {
+  history.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+}
+
 function undoCanvas() {
-  if (canvasHistory.length > 1) {
-    canvasHistory.pop(); // Bỏ nét vẽ hiện tại
-    const previousState = canvasHistory[canvasHistory.length - 1];
+  if (history.length > 0) {
+    const previousState = history.pop();
     ctx.putImageData(previousState, 0, 0);
   } else {
     drawGrid();
   }
 }
 
-// ==========================================
-// 4. QUẢN LÝ NGƯỜI DÙNG & ĐĂNG NHẬP
-// ==========================================
-function setRole(role) {
-  userRole = role;
-  const btns = document.querySelectorAll('.role-btn');
-  btns.forEach(b => b.classList.remove('active'));
-  if (role === 'student') btns[0]?.classList.add('active');
-  else btns[1]?.classList.add('active');
+function toggleGuide() {
+  showGuide = !showGuide;
+  const btn = document.getElementById('btn-guide');
+  btn.classList.toggle('off', !showGuide);
+  drawGrid();
 }
 
-function handleAuth(event) {
-  event.preventDefault();
-  const nameInput = document.getElementById("username")?.value;
-  if (!nameInput || !nameInput.trim()) return;
-
-  document.getElementById("display-name").innerText = nameInput;
-  document.getElementById("display-role").innerText = userRole === 'student' ? 'Học Sinh' : 'Giáo Viên';
-
-  document.getElementById("auth-screen").classList.add("hidden");
-  document.getElementById("main-screen").classList.remove("hidden");
-}
-
-function handleLogout() {
-  document.getElementById("main-screen").classList.add("hidden");
-  document.getElementById("auth-screen").classList.remove("hidden");
-}
-
-function openEditModal() { document.getElementById("edit-modal")?.classList.remove("hidden"); }
-function closeEditModal() { document.getElementById("edit-modal")?.classList.add("hidden"); }
-function saveNewName() {
-  const newName = document.getElementById("new-name-input")?.value;
-  if (newName && newName.trim()) {
-    document.getElementById("display-name").innerText = newName;
-  }
-  closeEditModal();
-}
-
-// ==========================================
-// 5. CHUYỂN TRANG & PHÁT ÂM TIẾNG VIỆT
-// ==========================================
-function showPage(pageName) {
-  ['home', 'lesson', 'exercise'].forEach(p => {
-    const el = document.getElementById(`page-${p}`);
-    if (el) el.classList.add("hidden");
-  });
-
-  const activePage = document.getElementById(`page-${pageName}`);
-  if (activePage) activePage.classList.remove("hidden");
-
-  const navBtns = document.querySelectorAll(".nav-btn");
-  navBtns.forEach(btn => btn.classList.remove("active"));
-  if (pageName === 'home') navBtns[0]?.classList.add("active");
-  if (pageName === 'lesson') navBtns[1]?.classList.add("active");
-  if (pageName === 'exercise') navBtns[2]?.classList.add("active");
-}
-
-function speakLetter() {
-  if ('speechSynthesis' in window) {
-    const utterance = new SpeechSynthesisUtterance(currentLetter.letter);
-    utterance.lang = 'vi-VN';
-    utterance.rate = 0.8; // Đọc chậm rãi cho trẻ nghe rõ
-    speechSynthesis.speak(utterance);
-  } else {
-    alert("Trình duyệt không hỗ trợ phát âm!");
-  }
-}
-
-// ==========================================
-// 6. BÀI TẬP TRẮC NGHIỆM
-// ==========================================
-function loadQuizQuestion() {
-  const quiz = quizData[currentQuizIndex];
+// Xử lý Đố Vui
+function loadQuiz() {
+  const quiz = QUIZ_QUESTIONS[currentQuizIndex];
   if (!quiz) return;
 
-  document.getElementById("quiz-question").innerText = quiz.question;
-  const optionsGrid = document.getElementById("quiz-options");
-  if (!optionsGrid) return;
-  optionsGrid.innerHTML = "";
+  document.getElementById('quiz-progress').textContent = `Câu ${currentQuizIndex + 1}/${QUIZ_QUESTIONS.length}`;
+  document.getElementById('quiz-question').textContent = quiz.question;
+  document.getElementById('quiz-feedback').classList.add('hidden');
+
+  const optionsContainer = document.getElementById('quiz-options');
+  optionsContainer.innerHTML = '';
 
   quiz.options.forEach(opt => {
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "quiz-opt-btn";
-    btn.innerText = opt.text;
-    btn.onclick = () => checkAnswer(opt.correct);
-    optionsGrid.appendChild(btn);
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt-btn';
+    btn.textContent = opt;
+    btn.onclick = () => checkAnswer(opt, quiz.answer);
+    optionsContainer.appendChild(btn);
   });
-
-  document.getElementById("quiz-feedback")?.classList.add("hidden");
 }
 
-function checkAnswer(isCorrect) {
-  const feedback = document.getElementById("quiz-feedback");
-  if (!feedback) return;
-  feedback.classList.remove("hidden");
+function checkAnswer(selected, correct) {
+  const feedback = document.getElementById('quiz-feedback');
+  const buttons = document.querySelectorAll('.quiz-opt-btn');
+  
+  buttons.forEach(b => b.disabled = true);
 
-  if (isCorrect) {
+  if (selected === correct) {
     userScore += 10;
-    document.getElementById("quiz-score").innerText = userScore;
-    document.getElementById("header-score").innerText = userScore;
-    feedback.className = "quiz-feedback success";
-    feedback.innerText = "🎉 Hoan hô! Bé trả lời chính xác rồi!";
-    
-    setTimeout(() => {
-      currentQuizIndex = (currentQuizIndex + 1) % quizData.length;
-      loadQuizQuestion();
-    }, 1500);
+    updateScoreDisplay();
+    feedback.textContent = '🎉 Chính xác! Bé giỏi quá!';
+    feedback.className = 'quiz-feedback success';
+    triggerMascotAnim('jump', 'Xuất sắc luôn bé ơi! 🌟');
   } else {
-    feedback.className = "quiz-feedback error";
-    feedback.innerText = "❌ Gần đúng rồi, bé chọn lại thử xem nhé!";
+    feedback.textContent = `❌ Tiếc quá! Đáp án đúng là: ${correct}`;
+    feedback.className = 'quiz-feedback error';
+    triggerMascotAnim('shake', 'Cố gắng ở câu sau nhé!');
+  }
+
+  feedback.classList.remove('hidden');
+
+  setTimeout(() => {
+    currentQuizIndex = (currentQuizIndex + 1) % QUIZ_QUESTIONS.length;
+    loadQuiz();
+  }, 2000);
+}
+
+function updateScoreDisplay() {
+  document.getElementById('header-score').textContent = userScore;
+  document.getElementById('quiz-score').textContent = userScore;
+}
+
+// Render Danh sách Huy hiệu
+function renderBadges() {
+  const container = document.getElementById('badge-grid');
+  if (!container) return;
+  container.innerHTML = '';
+
+  const badges = [
+    { name: 'Khởi Đầu', icon: '🌱', req: 1, desc: 'Tập tô 1 chữ' },
+    { name: 'Siêu Nhí', icon: '⭐', req: 5, desc: 'Tập tô 5 chữ' },
+    { name: 'Chăm Chỉ', icon: '🏆', req: 15, desc: 'Tập tô 15 chữ' },
+    { name: 'Thần Đồng', icon: '👑', req: 29, desc: 'Hoàn thành 29 chữ' }
+  ];
+
+  badges.forEach(b => {
+    const isUnlocked = learnedLetters.size >= b.req;
+    const badgeEl = document.createElement('div');
+    badgeEl.className = `badge ${isUnlocked ? '' : 'locked'}`;
+    badgeEl.innerHTML = `
+      <div class="badge-icon">${b.icon}</div>
+      <b>${b.name}</b>
+      <small>${b.desc}</small>
+    `;
+    container.appendChild(badgeEl);
+  });
+}
+
+// Linh vật & Modal Helper
+function triggerMascotAnim(animName, text) {
+  const mascot = document.getElementById('mascot-body');
+  const bubble = document.getElementById('bubble');
+  
+  mascot.className = `mascot-body ${animName}`;
+  if (text) bubble.textContent = text;
+
+  setTimeout(() => {
+    mascot.className = 'mascot-body';
+  }, 1000);
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.remove('hidden');
+  setTimeout(() => toast.classList.add('hidden'), 3000);
+}
+
+function openEditModal() {
+  document.getElementById('edit-modal').classList.remove('hidden');
+}
+
+function closeEditModal() {
+  document.getElementById('edit-modal').classList.add('hidden');
+}
+
+function saveNewName() {
+  const newName = document.getElementById('new-name-input').value.trim();
+  if (newName) {
+    currentUser.name = newName;
+    localStorage.setItem('user_session', JSON.stringify(currentUser));
+    document.getElementById('display-name').textContent = newName;
+    document.getElementById('home-name').textContent = newName;
+    closeEditModal();
+    showToast('Đã đổi tên thành công!');
   }
 }
