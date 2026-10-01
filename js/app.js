@@ -1,185 +1,238 @@
-let currentRole = 'HS';
-let authMode = 'login';
-let currentSelectedLetter = 'a';
-let currentUserData = null;
+// ==========================================
+// 1. DỮ LIỆU CHỮ CÁI CHUẨN (GIÁO TRÌNH SP076)
+// ==========================================
+const alphabetData = [
+  {
+    letter: "a",
+    title: "Chữ a (thường)",
+    height: "1 ô li (Cỡ vừa)",
+    strokes: "Nét cong kín + Nét móc ngược nhỏ",
+    guide: "Đặt bút dưới đường kẻ 3 một chút, viết nét cong kín. Từ điểm dừng bút, lia lên đường kẻ 3 viết nét móc ngược nhỏ sát nét cong kín, dừng bút ở đường kẻ 2.",
+    videoId: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    letter: "b",
+    title: "Chữ b (thường)",
+    height: "2.5 ô li (Cỡ vừa)",
+    strokes: "Nét khuyết trên + Nét thắt",
+    guide: "Đặt bút ở đường kẻ 2, viết nét khuyết trên cao 2.5 ô li, rê bút viết tiếp nét thắt ở ngang đường kẻ 3 rồi dừng bút.",
+    videoId: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    letter: "c",
+    title: "Chữ c (thường)",
+    height: "1 ô li (Cỡ vừa)",
+    strokes: "Nét cong trái",
+    guide: "Đặt bút dưới đường kẻ 3 một chút, viết nét cong trái, dừng bút ở khoảng giữa đường kẻ 1 và đường kẻ 2.",
+    videoId: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    letter: "d",
+    title: "Chữ d (thường)",
+    height: "2 ô li (Cỡ vừa)",
+    strokes: "Nét cong kín + Nét móc ngược dài",
+    guide: "Viết nét cong kín cao 1 ô li. Lia bút lên đường kẻ 5 viết nét móc ngược dài cao 2 ô li áp sát nét cong kín.",
+    videoId: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    letter: "e",
+    title: "Chữ e (thường)",
+    height: "1 ô li (Cỡ vừa)",
+    strokes: "Nét cong xéo liền nét cong trái",
+    guide: "Đặt bút trên đường kẻ 1 một chút, viết nét cong xéo lên rồi chuyển hướng viết nét cong trái, dừng bút ở đường kẻ 2.",
+    videoId: "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  }
+];
 
-function getRegisteredUsers() {
-    const saved = localStorage.getItem('app_registered_users');
-    return saved ? JSON.parse(saved) : [];
+// Dữ liệu bài tập trắc nghiệm
+const quizData = [
+  {
+    question: "Chữ 'a' thường (cỡ vừa) có độ cao bao nhiêu ô li?",
+    options: [
+      { text: "1 Ô li", correct: true },
+      { text: "2 Ô li", correct: false },
+      { text: "2.5 Ô li", correct: false },
+      { text: "3 Ô li", correct: false }
+    ]
+  },
+  {
+    question: "Chữ 'b' thường gồm những nét cơ bản nào?",
+    options: [
+      { text: "Nét cong kín + Nét móc", correct: false },
+      { text: "Nét khuyết trên + Nét thắt", correct: true },
+      { text: "Nét thẳng + Nét cong", correct: false },
+      { text: "Nét khuyết dưới + Nét móc", correct: false }
+    ]
+  }
+];
+
+// Biến lưu trạng thái ứng dụng
+let currentLetter = alphabetData[0];
+let currentQuizIndex = 0;
+let userScore = 0;
+let userRole = 'student';
+
+// ==========================================
+// 2. KHI TRANG WEB TẢI XONG (INITIALIZATION)
+// ==========================================
+document.addEventListener("DOMContentLoaded", () => {
+  renderAlphabetGrid();
+  loadLetterData(alphabetData[0]);
+  loadQuizQuestion();
+});
+
+// Render danh sách nút chữ cái ở Sidebar
+function renderAlphabetGrid() {
+  const gridContainer = document.getElementById("alphabet-list");
+  if (!gridContainer) return;
+
+  gridContainer.innerHTML = "";
+  alphabetData.forEach((item, index) => {
+    const btn = document.createElement("button");
+    btn.className = `letter-btn ${index === 0 ? 'active' : ''}`;
+    btn.innerText = item.letter;
+    btn.onclick = () => {
+      document.querySelectorAll(".letter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      loadLetterData(item);
+    };
+    gridContainer.appendChild(btn);
+  });
 }
 
-function saveRegisteredUsers(usersList) {
-    localStorage.setItem('app_registered_users', JSON.stringify(usersList));
+// Load thông tin bài học của chữ cái được chọn
+function loadLetterData(data) {
+  currentLetter = data;
+  document.getElementById("current-letter-title").innerText = `Học ${data.title}`;
+  document.getElementById("char-height").innerText = data.height;
+  document.getElementById("char-strokes").innerText = data.strokes;
+  document.getElementById("char-guide").innerText = data.guide;
+  
+  const iframe = document.getElementById("lesson-video");
+  if (iframe) iframe.src = data.videoId;
 }
 
-function switchAuthMode(mode) {
-    authMode = mode;
-    document.getElementById('tab-login').classList.toggle('active', mode === 'login');
-    document.getElementById('tab-register').classList.toggle('active', mode === 'register');
-
-    const fullnameGroup = document.getElementById('group-fullname');
-    const submitBtn = document.getElementById('btn-auth-submit');
-    const authSubtitle = document.getElementById('auth-subtitle');
-    const msgEl = document.getElementById('auth-msg');
-
-    msgEl.classList.add('hidden');
-
-    if (mode === 'register') {
-        fullnameGroup.classList.remove('hidden');
-        submitBtn.innerText = 'Tạo Tài Khoản Mới ✨';
-        authSubtitle.innerText = 'Đăng ký tài khoản để bắt đầu học';
-    } else {
-        fullnameGroup.classList.add('hidden');
-        submitBtn.innerText = 'Đăng Nhập Ngay ✨';
-        authSubtitle.innerText = 'Đăng nhập để bắt đầu luyện chữ';
-    }
+// ==========================================
+// 3. XỬ LÝ ĐĂNG NHẬP, ĐĂNG XUẤT & ĐỔI TÊN
+// ==========================================
+function switchAuthTab(tab) {
+  const tabs = document.querySelectorAll('.tab-btn');
+  tabs.forEach(t => t.classList.remove('active'));
+  if (tab === 'login') tabs[0].classList.add('active');
+  else tabs[1].classList.add('active');
 }
 
-function selectRole(role) {
-    currentRole = role;
-    document.getElementById('btn-role-hs').classList.toggle('active', role === 'HS');
-    document.getElementById('btn-role-gv').classList.toggle('active', role === 'GV');
+function setRole(role) {
+  userRole = role;
+  const btns = document.querySelectorAll('.role-btn');
+  btns.forEach(b => b.classList.remove('active'));
+  if (role === 'student') btns[0].classList.add('active');
+  else btns[1].classList.add('active');
 }
 
-function handleAuthSubmit(event) {
-    event.preventDefault();
+function handleAuth(event) {
+  event.preventDefault();
+  const nameInput = document.getElementById("username").value;
+  if (!nameInput.trim()) return;
 
-    const usernameVal = document.getElementById('username').value.trim();
-    const passwordVal = document.getElementById('password').value.trim();
-    const fullnameVal = document.getElementById('fullname').value.trim();
-    const msgEl = document.getElementById('auth-msg');
+  document.getElementById("display-name").innerText = nameInput;
+  document.getElementById("display-role").innerText = userRole === 'student' ? 'Học Sinh' : 'Giáo Viên';
 
-    msgEl.classList.add('hidden');
-
-    const defaultAccounts = USERS[currentRole] || [];
-    const registeredAccounts = getRegisteredUsers().filter(u => u.role === currentRole);
-    const allAccounts = [...defaultAccounts, ...registeredAccounts];
-
-    if (authMode === 'register') {
-        if (!fullnameVal) {
-            showAuthMsg('⚠️ Vui lòng nhập Họ và tên!');
-            return;
-        }
-
-        const isExist = allAccounts.some(u => u.username.toLowerCase() === usernameVal.toLowerCase());
-        if (isExist) {
-            showAuthMsg('⚠️ Tên tài khoản này đã tồn tại. Vui lòng chọn tên khác!');
-            return;
-        }
-
-        const newUser = { username: usernameVal, password: passwordVal, name: fullnameVal, role: currentRole };
-        const currentUsers = getRegisteredUsers();
-        currentUsers.push(newUser);
-        saveRegisteredUsers(currentUsers);
-
-        alert('🎉 Đăng ký tài khoản thành công! Bạn có thể đăng nhập ngay.');
-        switchAuthMode('login');
-        document.getElementById('username').value = usernameVal;
-        document.getElementById('password').value = passwordVal;
-
-    } else {
-        const foundUser = allAccounts.find(u => u.username.toLowerCase() === usernameVal.toLowerCase() && u.password === passwordVal);
-
-        if (foundUser) {
-            currentUserData = { ...foundUser, role: currentRole };
-
-            const savedCustomName = localStorage.getItem(`custom_name_${currentUserData.username}`);
-            if (savedCustomName) {
-                currentUserData.name = savedCustomName;
-            }
-
-            document.getElementById('login-screen').classList.add('hidden');
-            document.getElementById('main-screen').classList.remove('hidden');
-
-            document.getElementById('avatar-icon').innerText = currentRole === 'HS' ? '👶' : '👩‍🏫';
-            document.getElementById('user-role-tag').innerText = currentRole === 'HS' ? 'Học Sinh' : 'Giáo Viên';
-            document.getElementById('user-display-name').innerText = currentUserData.name;
-
-            initAlphabetGrid();
-        } else {
-            showAuthMsg('⚠️ Sai tài khoản hoặc mật khẩu! Nếu chưa có tài khoản, hãy bấm Đăng Ký nhé.');
-        }
-    }
+  document.getElementById("auth-screen").classList.add("hidden");
+  document.getElementById("main-screen").classList.remove("hidden");
 }
 
-function showAuthMsg(text) {
-    const msgEl = document.getElementById('auth-msg');
-    msgEl.innerText = text;
-    msgEl.classList.remove('hidden');
+function handleLogout() {
+  document.getElementById("main-screen").classList.add("hidden");
+  document.getElementById("auth-screen").classList.remove("hidden");
 }
 
-function logout() {
-    document.getElementById('main-screen').classList.add('hidden');
-    document.getElementById('login-screen').classList.remove('hidden');
+// Modal đổi tên
+function openEditModal() {
+  document.getElementById("edit-modal").classList.remove("hidden");
 }
-
-function openEditNameModal() {
-    if (!currentUserData) return;
-    document.getElementById('new-name-input').value = currentUserData.name;
-    document.getElementById('edit-name-modal').classList.remove('hidden');
+function closeEditModal() {
+  document.getElementById("edit-modal").classList.add("hidden");
 }
-
-function closeEditNameModal() {
-    document.getElementById('edit-name-modal').classList.add('hidden');
-}
-
 function saveNewName() {
-    const newName = document.getElementById('new-name-input').value.trim();
-    if (newName) {
-        currentUserData.name = newName;
-        localStorage.setItem(`custom_name_${currentUserData.username}`, newName);
-        document.getElementById('user-display-name').innerText = newName;
-        closeEditNameModal();
-    } else {
-        alert('Vui lòng nhập tên muốn đổi!');
-    }
+  const newName = document.getElementById("new-name-input").value;
+  if (newName.trim()) {
+    document.getElementById("display-name").innerText = newName;
+  }
+  closeEditModal();
 }
 
-function initAlphabetGrid() {
-    const gridContainer = document.getElementById('alphabet-list');
-    if (!gridContainer || typeof ALPHABET_DATA === 'undefined') return;
+// ==========================================
+// 4. CHUYỂN TRANG (NAVIGATION)
+// ==========================================
+function showPage(pageName) {
+  const pages = ['home', 'lesson', 'exercise'];
+  pages.forEach(p => {
+    const el = document.getElementById(`page-${p}`);
+    if (el) el.classList.add("hidden");
+  });
 
-    gridContainer.innerHTML = '';
-    ALPHABET_DATA.forEach((item, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'letter-btn';
-        btn.innerText = item.letter;
-        btn.onclick = () => selectLetter(item.letter);
-        gridContainer.appendChild(btn);
+  const activePage = document.getElementById(`page-${pageName}`);
+  if (activePage) activePage.classList.remove("hidden");
 
-        if (index === 0) selectLetter(item.letter);
-    });
+  // Highlight menu nút
+  const navBtns = document.querySelectorAll(".nav-btn");
+  navBtns.forEach(btn => btn.classList.remove("active"));
+  if (pageName === 'home') navBtns[0]?.classList.add("active");
+  if (pageName === 'lesson') navBtns[1]?.classList.add("active");
+  if (pageName === 'exercise') navBtns[2]?.classList.add("active");
 }
 
-function selectLetter(letterChar) {
-    currentSelectedLetter = letterChar;
-
-    document.querySelectorAll('.letter-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.innerText === letterChar);
-    });
-
-    const letterObj = ALPHABET_DATA.find(item => item.letter === letterChar);
-
-    if (letterObj) {
-        document.getElementById('current-letter-title').innerText = `Bài học chữ ${letterObj.letter.toUpperCase()}`;
-
-        const videoIframe = document.getElementById('letter-video');
-        if (videoIframe && letterObj.youtubeId) {
-            videoIframe.src = `https://www.youtube.com/embed/${letterObj.youtubeId}?autoplay=1&rel=0`;
-        }
-
-        document.getElementById('video-caption').innerText = letterObj.description || 'Theo dõi từng nét bút trên màn hình để luyện viết theo.';
-        speakLetter();
-    }
-}
-
+// Phát âm chữ cái
 function speakLetter() {
-    if (!currentSelectedLetter) return;
-    if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(currentSelectedLetter);
-        utterance.lang = 'vi-VN';
-        utterance.rate = 0.85;
-        window.speechSynthesis.speak(utterance);
-    }
+  if ('speechSynthesis' in window) {
+    const utterance = new SpeechSynthesisUtterance(currentLetter.letter);
+    utterance.lang = 'vi-VN';
+    speechSynthesis.speak(utterance);
+  } else {
+    alert("Trình duyệt không hỗ trợ phát âm!");
+  }
+}
+
+// ==========================================
+// 5. BÀI TẬP TRẮC NGHIỆM
+// ==========================================
+function loadQuizQuestion() {
+  const quiz = quizData[currentQuizIndex];
+  if (!quiz) return;
+
+  document.getElementById("quiz-question").innerText = quiz.question;
+  const optionsGrid = document.getElementById("quiz-options");
+  optionsGrid.innerHTML = "";
+
+  quiz.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.className = "quiz-opt-btn";
+    btn.innerText = opt.text;
+    btn.onclick = () => checkAnswer(opt.correct);
+    optionsGrid.appendChild(btn);
+  });
+
+  const feedback = document.getElementById("quiz-feedback");
+  feedback.classList.add("hidden");
+}
+
+function checkAnswer(isCorrect) {
+  const feedback = document.getElementById("quiz-feedback");
+  feedback.classList.remove("hidden");
+
+  if (isCorrect) {
+    userScore += 10;
+    document.getElementById("quiz-score").innerText = userScore;
+    feedback.className = "quiz-feedback success";
+    feedback.innerText = "🎉 Chính xác! Bé giỏi quá!";
+    
+    setTimeout(() => {
+      currentQuizIndex = (currentQuizIndex + 1) % quizData.length;
+      loadQuizQuestion();
+    }, 1500);
+  } else {
+    feedback.className = "quiz-feedback error";
+    feedback.innerText = "❌ Chưa đúng rồi, bé thử lại xem sao nhé!";
+  }
 }
