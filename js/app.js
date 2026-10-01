@@ -1,51 +1,111 @@
-/* =========================================================
-   WEB BÉ TẬP VIẾT HP001 - PHIÊN BẢN MỚI
-   ========================================================= */
-
 let currentRole = 'HS';
+let authMode = 'login';
 let currentSelectedLetter = 'a';
 let currentUserData = null;
 
-// 1. XỬ LÝ CHUYỂN VAI TRÒ & ĐĂNG NHẬP
+function getRegisteredUsers() {
+    const saved = localStorage.getItem('app_registered_users');
+    return saved ? JSON.parse(saved) : [];
+}
+
+function saveRegisteredUsers(usersList) {
+    localStorage.setItem('app_registered_users', JSON.stringify(usersList));
+}
+
+function switchAuthMode(mode) {
+    authMode = mode;
+    document.getElementById('tab-login').classList.toggle('active', mode === 'login');
+    document.getElementById('tab-register').classList.toggle('active', mode === 'register');
+
+    const fullnameGroup = document.getElementById('group-fullname');
+    const submitBtn = document.getElementById('btn-auth-submit');
+    const authSubtitle = document.getElementById('auth-subtitle');
+    const msgEl = document.getElementById('auth-msg');
+
+    msgEl.classList.add('hidden');
+
+    if (mode === 'register') {
+        fullnameGroup.classList.remove('hidden');
+        submitBtn.innerText = 'Tạo Tài Khoản Mới ✨';
+        authSubtitle.innerText = 'Đăng ký tài khoản để bắt đầu học';
+    } else {
+        fullnameGroup.classList.add('hidden');
+        submitBtn.innerText = 'Đăng Nhập Ngay ✨';
+        authSubtitle.innerText = 'Đăng nhập để bắt đầu luyện chữ';
+    }
+}
+
 function selectRole(role) {
     currentRole = role;
     document.getElementById('btn-role-hs').classList.toggle('active', role === 'HS');
     document.getElementById('btn-role-gv').classList.toggle('active', role === 'GV');
-    
-    document.getElementById('label-username').innerText = role === 'HS' ? 'Mã số học sinh:' : 'Mã số giáo viên:';
-    document.getElementById('username').value = role === 'HS' ? 'HS001' : 'GV001';
 }
 
-function handleLogin(event) {
+function handleAuthSubmit(event) {
     event.preventDefault();
-    const userVal = document.getElementById('username').value.trim();
-    const passVal = document.getElementById('password').value.trim();
-    const errorEl = document.getElementById('login-error');
 
-    const accountList = USERS[currentRole] || [];
-    const foundUser = accountList.find(u => u.username === userVal && u.password === passVal);
+    const usernameVal = document.getElementById('username').value.trim();
+    const passwordVal = document.getElementById('password').value.trim();
+    const fullnameVal = document.getElementById('fullname').value.trim();
+    const msgEl = document.getElementById('auth-msg');
 
-    if (foundUser) {
-        errorEl.innerText = "";
-        currentUserData = { ...foundUser, role: currentRole };
+    msgEl.classList.add('hidden');
 
-        // Kiểm tra xem người dùng đã từng đổi tên trước đó chưa (trong localStorage)
-        const savedCustomName = localStorage.getItem(`custom_name_${currentUserData.username}`);
-        if (savedCustomName) {
-            currentUserData.name = savedCustomName;
+    const defaultAccounts = USERS[currentRole] || [];
+    const registeredAccounts = getRegisteredUsers().filter(u => u.role === currentRole);
+    const allAccounts = [...defaultAccounts, ...registeredAccounts];
+
+    if (authMode === 'register') {
+        if (!fullnameVal) {
+            showAuthMsg('⚠️ Vui lòng nhập Họ và tên!');
+            return;
         }
 
-        // Cập nhật giao diện màn hình chính
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('main-screen').classList.remove('hidden');
-        
-        document.getElementById('user-role-badge').innerText = currentRole === 'HS' ? 'Học Sinh' : 'Giáo Viên';
-        document.getElementById('user-display-name').innerText = currentUserData.name;
-        
-        initAlphabetGrid();
+        const isExist = allAccounts.some(u => u.username.toLowerCase() === usernameVal.toLowerCase());
+        if (isExist) {
+            showAuthMsg('⚠️ Tên tài khoản này đã tồn tại. Vui lòng chọn tên khác!');
+            return;
+        }
+
+        const newUser = { username: usernameVal, password: passwordVal, name: fullnameVal, role: currentRole };
+        const currentUsers = getRegisteredUsers();
+        currentUsers.push(newUser);
+        saveRegisteredUsers(currentUsers);
+
+        alert('🎉 Đăng ký tài khoản thành công! Bạn có thể đăng nhập ngay.');
+        switchAuthMode('login');
+        document.getElementById('username').value = usernameVal;
+        document.getElementById('password').value = passwordVal;
+
     } else {
-        errorEl.innerText = "Sai mã số hoặc mật khẩu! Vui lòng thử lại.";
+        const foundUser = allAccounts.find(u => u.username.toLowerCase() === usernameVal.toLowerCase() && u.password === passwordVal);
+
+        if (foundUser) {
+            currentUserData = { ...foundUser, role: currentRole };
+
+            const savedCustomName = localStorage.getItem(`custom_name_${currentUserData.username}`);
+            if (savedCustomName) {
+                currentUserData.name = savedCustomName;
+            }
+
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('main-screen').classList.remove('hidden');
+
+            document.getElementById('avatar-icon').innerText = currentRole === 'HS' ? '👶' : '👩‍🏫';
+            document.getElementById('user-role-tag').innerText = currentRole === 'HS' ? 'Học Sinh' : 'Giáo Viên';
+            document.getElementById('user-display-name').innerText = currentUserData.name;
+
+            initAlphabetGrid();
+        } else {
+            showAuthMsg('⚠️ Sai tài khoản hoặc mật khẩu! Nếu chưa có tài khoản, hãy bấm Đăng Ký nhé.');
+        }
     }
+}
+
+function showAuthMsg(text) {
+    const msgEl = document.getElementById('auth-msg');
+    msgEl.innerText = text;
+    msgEl.classList.remove('hidden');
 }
 
 function logout() {
@@ -53,7 +113,6 @@ function logout() {
     document.getElementById('login-screen').classList.remove('hidden');
 }
 
-// 2. TÍNH NĂNG ĐỔI TÊN HIỂN THỊ (SỬA LỖI BẠN PHẢN HỒI)
 function openEditNameModal() {
     if (!currentUserData) return;
     document.getElementById('new-name-input').value = currentUserData.name;
@@ -68,19 +127,14 @@ function saveNewName() {
     const newName = document.getElementById('new-name-input').value.trim();
     if (newName) {
         currentUserData.name = newName;
-        // Lưu lại tên mới vào bộ nhớ trình duyệt theo ID người dùng
         localStorage.setItem(`custom_name_${currentUserData.username}`, newName);
-        
-        // Đổi tên trên giao diện ngay lập tức
         document.getElementById('user-display-name').innerText = newName;
         closeEditNameModal();
-        alert("Đã cập nhật tên hiển thị thành công!");
     } else {
-        alert("Vui lòng nhập tên hợp lệ!");
+        alert('Vui lòng nhập tên muốn đổi!');
     }
 }
 
-// 3. HIỂN THỊ CHỮ CÁI VÀ VIDEO
 function initAlphabetGrid() {
     const gridContainer = document.getElementById('alphabet-list');
     if (!gridContainer || typeof ALPHABET_DATA === 'undefined') return;
@@ -107,14 +161,14 @@ function selectLetter(letterChar) {
     const letterObj = ALPHABET_DATA.find(item => item.letter === letterChar);
 
     if (letterObj) {
-        document.getElementById('current-letter-title').innerText = `Bài học chữ ${letterObj.letter}`;
-        
+        document.getElementById('current-letter-title').innerText = `Bài học chữ ${letterObj.letter.toUpperCase()}`;
+
         const videoIframe = document.getElementById('letter-video');
         if (videoIframe && letterObj.youtubeId) {
             videoIframe.src = `https://www.youtube.com/embed/${letterObj.youtubeId}?autoplay=1&rel=0`;
         }
 
-        document.getElementById('video-caption').innerText = `${letterObj.description || 'Hướng dẫn nét vẽ.'} Em hãy xem kỹ video nhé!`;
+        document.getElementById('video-caption').innerText = letterObj.description || 'Theo dõi từng nét bút trên màn hình để luyện viết theo.';
         speakLetter();
     }
 }
@@ -125,7 +179,7 @@ function speakLetter() {
         window.speechSynthesis.cancel();
         const utterance = new SpeechSynthesisUtterance(currentSelectedLetter);
         utterance.lang = 'vi-VN';
-        utterance.rate = 0.8;
+        utterance.rate = 0.85;
         window.speechSynthesis.speak(utterance);
     }
 }
