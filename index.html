@@ -3,103 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Học Chữ Cái Tiếng Việt Chuẩn & Tập Viết Ô Li</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Font chữ cho học sinh tiểu học -->
-    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <title>Bé Học Viết Chữ Cái Tiếng Việt</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="app-container">
-        <!-- HEADER -->
-        <header class="app-header">
-            <h1>🌸 Bé Vui Học Chữ Tiếng Việt 🌸</h1>
-            <p>Luyện đọc, nghe phát âm, xem video hướng dẫn và tập viết trên ô li chuẩn Tiểu học</p>
+
+    <!-- MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ -->
+    <div id="auth-screen" class="login-wrapper">
+        <div class="login-card">
+            <div class="brand-icon">✏️</div>
+            <div class="brand">
+                <h1>BÉ HỌC VIẾT CHỮ</h1>
+                <p>Hành trang vui học vào lớp 1 🌟</p>
+            </div>
+
+            <div class="role-switch">
+                <button id="role-hs" class="role-btn active" type="button" onclick="setRole('HS')">👶 Học Sinh</button>
+                <button id="role-gv" class="role-btn" type="button" onclick="setRole('GV')">👩‍🏫 Giáo Viên</button>
+            </div>
+
+            <div class="auth-tabs">
+                <button id="tab-login" class="tab-btn active" type="button" onclick="switchAuthTab('login')">Đăng Nhập</button>
+                <button id="tab-register" class="tab-btn" type="button" onclick="switchAuthTab('register')">Đăng Ký</button>
+            </div>
+
+            <form id="auth-form" onsubmit="handleAuth(event)">
+                <div class="input-group">
+                    <label for="auth-username">Tên tài khoản:</label>
+                    <input type="text" id="auth-username" placeholder="Nhập tên tài khoản..." required>
+                </div>
+
+                <div class="input-group">
+                    <label for="auth-password">Mật khẩu:</label>
+                    <input type="password" id="auth-password" placeholder="Nhập mật khẩu..." required>
+                </div>
+
+                <div id="register-fullname-group" class="input-group hidden">
+                    <label for="auth-fullname">Họ và tên bé / cô:</label>
+                    <input type="text" id="auth-fullname" placeholder="Nhập họ và tên...">
+                </div>
+
+                <button type="submit" id="btn-auth-submit" class="btn-submit">🚀 BẮT ĐẦU VUI HỌC</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MÀN HÌNH CHÍNH -->
+    <div id="app-screen" class="main-wrapper hidden">
+        <header class="top-header">
+            <div class="user-info-card">
+                <div class="avatar-badge" id="user-avatar-display">🐱</div>
+                <div>
+                    <div class="name-display">
+                        <span id="user-name-display">Bé Tin Tin</span>
+                        <button type="button" class="btn-edit-inline" onclick="openEditProfileModal()">✏️ Sửa</button>
+                    </div>
+                    <span id="user-role-tag" class="role-tag">Học sinh</span>
+                </div>
+            </div>
+
+            <nav class="main-nav" id="main-nav-container">
+                <!-- Tự động load menu qua JS -->
+            </nav>
+
+            <button type="button" class="btn-logout" onclick="logout()">🚪 Thoát</button>
         </header>
 
-        <!-- NAVIGATION TABS -->
-        <nav class="tab-nav">
-            <button class="tab-btn active" data-tab="alphabet">📖 Bảng Chữ Cái & Tập Viết</button>
-            <button class="tab-btn" data-tab="quiz">🎮 Vừa Học Vừa Chơi (Trắc Nghiệm)</button>
-        </nav>
-
-        <!-- TAB 1: ALPHABET & PRACTICE -->
-        <main class="tab-content active" id="alphabet-tab">
-            <div class="alphabet-layout">
-                <!-- Danh sách chữ cái -->
-                <div class="letter-sidebar">
-                    <h3>Chọn chữ cái</h3>
-                    <div class="letter-grid" id="letterGrid">
-                        <!-- Các nút chữ cái sẽ được render tự động bằng JS -->
-                    </div>
-                </div>
-
-                <!-- Khu vực hiển thị chi tiết, video và bảng tập viết -->
-                <div class="letter-workspace">
-                    <div class="workspace-top-row">
-                        <!-- Thẻ thông tin chữ cái -->
-                        <div class="letter-info-card" id="letterInfoCard">
-                            <div class="display-character" id="displayChar">a</div>
-                            <div class="info-details">
-                                <h2 id="charTitle">Chữ a (thường)</h2>
-                                <p><strong>Độ cao:</strong> <span id="charHeight">1 ô li (Cỡ vừa)</span></p>
-                                <p><strong>Cấu tạo nét:</strong> <span id="charStrokes">Nét cong kín + Nét móc ngược nhỏ</span></p>
-                                <p><strong>Hướng dẫn:</strong> <span id="charGuide">Đặt bút dưới đường kẻ ngang 2, viết nét cong kín, sau đó lia bút lên đường kẻ ngang 3 viết nét móc ngược sát nét cong.</span></p>
-                                <div class="action-buttons">
-                                    <button class="btn-primary" id="speakBtn">🔊 Nghe phát âm</button>
-                                    <button class="btn-secondary" id="clearCanvasBtn">🧹 Xóa bảng viết</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Khung Video YouTube hướng dẫn viết -->
-                        <div class="video-container-box">
-                            <div class="video-header">📺 Video hướng dẫn viết</div>
-                            <div class="video-wrapper" id="videoWrapper">
-                                <!-- Thẻ iframe nhúng video YouTube sẽ được cập nhật tự động qua JS -->
-                                <iframe id="youtubeVideo" src="" title="Hướng dẫn viết chữ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Bảng tập viết ô li -->
-                    <div class="writing-board-container">
-                        <div class="board-header">
-                            <span>Bảng tập viết (Ô li chuẩn 2mm)</span>
-                            <span class="hint-text">Dùng chuột hoặc ngón tay (trên điện thoại/máy tính bảng) để viết vào ô li bên dưới:</span>
-                        </div>
-                        <div class="canvas-wrapper">
-                            <canvas id="writingCanvas"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <!-- TAB 2: QUIZ TRẮC NGHIỆM -->
-        <main class="tab-content" id="quiz-tab">
-            <div class="quiz-container">
-                <div class="quiz-header-status">
-                    <span>Câu hỏi: <strong id="currentQNum">1</strong> / <span id="totalQNum">5</span></span>
-                    <span>Điểm số: <strong id="scoreNum">0</strong></span>
-                </div>
-                <div class="quiz-card" id="quizCard">
-                    <h3 id="questionText">Đang tải câu hỏi...</h3>
-                    <div class="options-grid" id="optionsContainer">
-                        <!-- Các đáp án sẽ render ở đây -->
-                    </div>
-                </div>
-                <div class="quiz-footer">
-                    <button class="btn-primary" id="nextQuizBtn" style="display: none;">Câu hỏi tiếp theo ➔</button>
-                </div>
-                <div class="quiz-result" id="quizResult" style="display: none;">
-                    <h3>🎉 Chúc mừng bé đã hoàn thành bài tập!</h3>
-                    <p>Số điểm đạt được: <strong id="finalScore">0</strong></p>
-                    <button class="btn-primary" id="restartQuizBtn">Làm lại từ đầu</button>
-                </div>
-            </div>
+        <main id="content-area">
+            <!-- Nội dung bài học hoặc trang giáo viên sẽ load ở đây -->
         </main>
     </div>
 
-    <script src="app.js"></script>
+    <!-- MODAL ĐỔI ĐỔI TÊN / AVATAR -->
+    <div id="profile-modal" class="modal-backdrop hidden">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>Cập Nhật Hồ Sơ 🎨</h3>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label for="edit-name-input">Tên hiển thị mới:</label>
+                    <input type="text" id="edit-name-input" placeholder="Nhập tên mới...">
+                </div>
+                <div class="input-group">
+                    <label for="edit-avatar-select">Chọn hình đại diện:</label>
+                    <select id="edit-avatar-select" style="width:100%; padding:12px; border-radius:18px; border:3px solid #E2E8F0; font-size:18px; font-weight:700;">
+                        <option value="🐱">🐱 Mèo Con</option>
+                        <option value="🐶">🐶 Chú Cún</option>
+                        <option value="🐻">🐻 Gấu Bông</option>
+                        <option value="🦄">🦄 Kỳ Lân</option>
+                        <option value="🐰">🐰 Thỏ Trắng</option>
+                        <option value="👩‍🏫">👩‍🏫 Cô Giáo</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cancel" onclick="closeEditProfileModal()">Hủy</button>
+                <button type="button" class="btn-save" onclick="saveProfile()">Lưu Lại ✨</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
