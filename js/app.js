@@ -205,7 +205,14 @@ function renderLessonDetail() {
         <!-- KHUNG MÀN HÌNH TV HOẠT HÌNH -->
         <div class="tv-container">
             <div class="video-frame-container">
-                <iframe src="https://www.youtube.com/embed/${lesson.youtubeId}" frameborder="0" allowfullscreen></iframe>
+                <iframe 
+                    src="https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?rel=0" 
+                    title="${lesson.name}"
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen>
+                </iframe>
             </div>
         </div>
 
