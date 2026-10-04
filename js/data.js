@@ -234,20 +234,104 @@ const ALPHABET_DATA = [
     }
 ];
 
-// DỮ LIỆU 14 NÉT CƠ BẢN
-const BASIC_STROKES_DATA = [
-    { id: "sothang", name: "Nét sổ thẳng", youtubeId: "qeVv7ApZr1I", guide: "Đặt bút trên đường kẻ 3, kéo thẳng xuống đường kẻ 1 rồi dừng bút." },
-    { id: "ngang", name: "Nét ngang", youtubeId: "1inzb8uiVio", guide: "Đặt bút trên đường kẻ 2, đưa bút từ trái sang phải." },
-    { id: "xientrai", name: "Nét xiên trái", youtubeId: "2hjEJp9L1rM", guide: "Đặt bút ở đường kẻ 3, kéo chéo xuống góc trái đường kẻ 1." },
-    { id: "xienphai", name: "Nét xiên phải", youtubeId: "ZutfvPYwK40", guide: "Đặt bút ở đường kẻ 3, kéo chéo xuống góc phải đường kẻ 1." },
-    { id: "mocxuoi", name: "Nét móc xuôi", youtubeId: "9Xekg3rU7sc", guide: "Đặt bút giữa ô li 2 và 3, vòng cong lên đường kẻ 3 rồi kéo thẳng xuống đường kẻ 1." },
-    { id: "mocnguoc", name: "Nét móc ngược", youtubeId: "dfbBiT2aAYs", guide: "Đặt bút ở đường kẻ 3, kéo thẳng xuống đường kẻ 1 rồi lượn cong hất lên." },
-    { id: "moc2dau", name: "Nét móc hai đầu", youtubeId: "LYJ_MVg5Ggs", guide: "Đặt bút ở đường kẻ 2, lượn cong lên đường kẻ 3 rồi kéo xuống móc hất lên." },
-    { id: "conghotrai", name: "Nét cong hở trái", youtubeId: "IEdfR38gcjo", guide: "Đặt bút dưới đường kẻ 3, lượn cong sang phải rồi vòng xuống đường kẻ 1." },
-    { id: "conghophai", name: "Nét cong hở phải", youtubeId: "OZ98t9hNipo", guide: "Đặt bút dưới đường kẻ 3, lượn cong sang trái rồi vòng xuống đường kẻ 1." },
-    { id: "congkin", name: "Nét cong khép kín", youtubeId: "oTDP5kYTd6o", guide: "Đặt bút dưới đường kẻ 3, viết nét cong từ phải sang trái khép kín thành hình tròn." },
-    { id: "khuyettren", name: "Nét khuyết trên", youtubeId: "KM3cqrhKeSw", guide: "Đặt bút đường kẻ 2, kéo xiên lên đường kẻ 6, lượn cong vòng xuống kéo thẳng về đường kẻ 1." },
-    { id: "khuyetduoi", name: "Nét khuyết dưới", youtubeId: "h7YOnn63EQU", guide: "Đặt bút đường kẻ 3, kéo thẳng xuống dưới đường kẻ 1 (3 ô li), lượn cong hất xiên lên." },
-    { id: "thattren", name: "Nét thắt trên", youtubeId: "X3YNUW3q_7A", guide: "Đặt bút đường kẻ 1, đưa lên đường kẻ 3 xoắn một vòng nhỏ thắt lại." },
-    { id: "thatgiua", name: "Nét thắt giữa", youtubeId: "xVstl9bH2_o", guide: "Đặt bút viết nét khuyết, đến đường kẻ 2 xoắn vòng thắt nhỏ rồi kéo ra." }
+// Dữ liệu 14 nét cơ bản
+const BASIC_STROKES = [
+    {
+        id: "net-ngang",
+        name: "Nét ngang",
+        symbol: "一",
+        youtubeId: "J8mY7vU_N8Y",
+        description: "Đặt bút trên đường kẻ 2, rê bút từ trái sang phải dừng lại trên đường kẻ 2."
+    },
+    {
+        id: "net-so",
+        name: "Nét sổ",
+        symbol: "丨",
+        youtubeId: "7L8N_Q3nKso",
+        description: "Đặt bút trên đường kẻ 3, kéo thẳng đứng xuống dưới dừng lại ở đường kẻ 1."
+    },
+    {
+        id: "net-xien-phai",
+        name: "Nét xiên phải",
+        symbol: "╱",
+        youtubeId: "Bkx9Y8cW9I0",
+        description: "Đặt bút ở đường kẻ 3, kéo xiên xuống dưới nghiêng về phía bên phải."
+    },
+    {
+        id: "net-xien-trai",
+        name: "Nét xiên trái",
+        symbol: "╲",
+        youtubeId: "M3xW-vX9UuM",
+        description: "Đặt bút ở đường kẻ 3, kéo xiên xuống dưới nghiêng về phía bên trái."
+    },
+    {
+        id: "net-moc-xuoi",
+        name: "Nét móc xuoi",
+        symbol: "∩",
+        youtubeId: "wL4G2sN-Jv8",
+        description: "Đặt bút ở đường kẻ 2, rê bút lên uốn cong rồi kéo thẳng xuống dừng ở đường kẻ 1."
+    },
+    {
+        id: "net-moc-nguoc",
+        name: "Nét móc ngược",
+        symbol: "∪",
+        youtubeId: "P_z-sT2u9vA",
+        description: "Đặt bút trên đường kẻ 3, kéo thẳng xuống gần đường kẻ 1 thì lượn cong móc lên."
+    },
+    {
+        id: "net-moc-hai-dau",
+        name: "Nét móc hai đầu",
+        symbol: "∿",
+        youtubeId: "3mE5G9X_uY4",
+        description: "Kết hợp nét móc xuôi ở đầu và nét móc ngược ở cuối."
+    },
+    {
+        id: "net-cong-ho-phai",
+        name: "Nét cong hở phải",
+        symbol: "⊂",
+        youtubeId: "8K_xT1eH_k0",
+        description: "Đặt bút dưới đường kẻ 3, lượn cong sang trái xuống đường kẻ 1 rồi hất nhẹ lên."
+    },
+    {
+        id: "net-cong-ho-trai",
+        name: "Nét cong hở trái",
+        symbol: "⊃",
+        youtubeId: "K1p9yX5T2uI",
+        description: "Đặt bút dưới đường kẻ 3, lượn cong sang phải xuống đường kẻ 1 rồi hất nhẹ lên."
+    },
+    {
+        id: "net-cong-kin",
+        name: "Nét cong kín",
+        symbol: "O",
+        youtubeId: "vL7X82qZ_m0",
+        description: "Đặt bút dưới đường kẻ 3 một chút, viết đường cong khép kín tròn trịa như quả trứng."
+    },
+    {
+        id: "net-khuyet-tren",
+        name: "Nét khuyết trên",
+        symbol: "ℓ",
+        youtubeId: "N8vU_9XmP3k",
+        description: "Đặt bút ở đường kẻ 2, rê xiên lên uốn cong đầu khuyết rồi kéo thẳng xuống đường kẻ 1."
+    },
+    {
+        id: "net-khuyet-duoi",
+        name: "Nét khuyết dưới",
+        symbol: "g",
+        youtubeId: "4Rz_9xI1Sno",
+        description: "Kéo thẳng từ đường kẻ 3 xuống qua đường kẻ 1, uốn cong vòng sang trái rồi xiên lên."
+    },
+    {
+        id: "net-that",
+        name: "Nét thắt",
+        symbol: "ɤ",
+        youtubeId: "V5xW9M2u8Yo",
+        description: "Viết nét uốn cong có vòng xoắn thắt nhỏ ở giữa."
+    },
+    {
+        id: "net-xoan",
+        name: "Nét xoắn",
+        symbol: "🌀",
+        youtubeId: "Z7mY8xP2N3A",
+        description: "Tạo nét vòng xoắn khi đổi hướng đường nét."
+    }
 ];
