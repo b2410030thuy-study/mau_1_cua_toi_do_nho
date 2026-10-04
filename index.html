@@ -3,108 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bé Học Viết Chữ Cái Tiếng Việt</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Hành Trang Vào Lớp 1 - Bé Tập Viết Nét & Chữ Cái</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Canvas Confetti (Hiệu ứng pháo hoa) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
-    <!-- MÀN HÌNH ĐĂNG NHẬP / ĐĂNG KÝ -->
-    <div id="auth-screen" class="login-wrapper">
-        <div class="login-card">
-            <div class="brand-icon">✏️</div>
-            <div class="brand">
-                <h1>BÉ HỌC VIẾT CHỮ</h1>
-                <p>Hành trang vui học vào lớp 1 🌟</p>
-            </div>
-
-            <div class="role-switch">
-                <button id="role-hs" class="role-btn active" type="button" onclick="setRole('HS')">👶 Học Sinh</button>
-                <button id="role-gv" class="role-btn" type="button" onclick="setRole('GV')">👩‍🏫 Giáo Viên</button>
-            </div>
-
-            <div class="auth-tabs">
-                <button id="tab-login" class="tab-btn active" type="button" onclick="switchAuthTab('login')">Đăng Nhập</button>
-                <button id="tab-register" class="tab-btn" type="button" onclick="switchAuthTab('register')">Đăng Ký</button>
-            </div>
-
-            <form id="auth-form" onsubmit="handleAuth(event)">
-                <div class="input-group">
-                    <label for="auth-username">Tên tài khoản:</label>
-                    <input type="text" id="auth-username" placeholder="Nhập tên tài khoản..." required>
-                </div>
-
-                <div class="input-group">
-                    <label for="auth-password">Mật khẩu:</label>
-                    <input type="password" id="auth-password" placeholder="Nhập mật khẩu..." required>
-                </div>
-
-                <div id="register-fullname-group" class="input-group hidden">
-                    <label for="auth-fullname">Họ và tên bé / cô:</label>
-                    <input type="text" id="auth-fullname" placeholder="Nhập họ và tên...">
-                </div>
-
-                <button type="submit" id="btn-auth-submit" class="btn-submit">🚀 BẮT ĐẦU VUI HỌC</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- MÀN HÌNH CHÍNH -->
-    <div id="app-screen" class="main-wrapper hidden">
-        <header class="top-header">
-            <div class="user-info-card">
-                <div class="avatar-badge" id="user-avatar-display">🐱</div>
-                <div>
-                    <div class="name-display">
-                        <span id="user-name-display">Bé Tin Tin</span>
-                        <button type="button" class="btn-edit-inline" onclick="openEditProfileModal()">✏️ Sửa</button>
-                    </div>
-                    <span id="user-role-tag" class="role-tag">Học sinh</span>
-                </div>
-            </div>
-
-            <nav class="main-nav" id="main-nav-container">
-                <!-- Tự động load menu qua JS -->
-            </nav>
-
-            <button type="button" class="btn-logout" onclick="logout()">🚪 Thoát</button>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1>🌸 BÉ TẬP VIẾT & HỌC BẢNG CHỮ CÁI 🌸</h1>
+            <p>Hành trang vui học vào Lớp 1 cùng Mèo Miu</p>
         </header>
 
-        <main id="content-area">
-            <!-- Nội dung bài học hoặc trang giáo viên sẽ load ở đây -->
-        </main>
-    </div>
+        <!-- Thanh chuyển Tab chính -->
+        <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="alphabet">✍️ Tập Viết Nét & Chữ</button>
+            <button class="tab-btn" data-tab="quiz">🧩 Đố Vui Ôn Tập</button>
+        </nav>
 
-    <!-- MODAL ĐỔI ĐỔI TÊN / AVATAR -->
-    <div id="profile-modal" class="modal-backdrop hidden">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3>Cập Nhật Hồ Sơ 🎨</h3>
-            </div>
-            <div class="modal-body">
-                <div class="input-group">
-                    <label for="edit-name-input">Tên hiển thị mới:</label>
-                    <input type="text" id="edit-name-input" placeholder="Nhập tên mới...">
-                </div>
-                <div class="input-group">
-                    <label for="edit-avatar-select">Chọn hình đại diện:</label>
-                    <select id="edit-avatar-select" style="width:100%; padding:12px; border-radius:18px; border:3px solid #E2E8F0; font-size:18px; font-weight:700;">
-                        <option value="🐱">🐱 Mèo Con</option>
-                        <option value="🐶">🐶 Chú Cún</option>
-                        <option value="🐻">🐻 Gấu Bông</option>
-                        <option value="🦄">🦄 Kỳ Lân</option>
-                        <option value="🐰">🐰 Thỏ Trắng</option>
-                        <option value="👩‍🏫">👩‍🏫 Cô Giáo</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn-cancel" onclick="closeEditProfileModal()">Hủy</button>
-                <button type="button" class="btn-save" onclick="saveProfile()">Lưu Lại ✨</button>
+        <!-- TAB 1: TẬP VIẾT -->
+        <div id="alphabet-tab" class="tab-content active">
+            <div class="alphabet-layout">
+                
+                <!-- Sidebar chọn chế độ & Nét/Chữ -->
+                <aside class="letter-sidebar">
+                    <div class="mode-selector">
+                        <button id="btnModeStrokes" class="mode-btn active">14 Nét cơ bản</button>
+                        <button id="btnModeLetters" class="mode-btn">Chữ cái (a-y)</button>
+                    </div>
+                    <h3 id="sidebarTitle">Danh sách nét cơ bản</h3>
+                    <div id="letterGrid" class="letter-grid">
+                        <!-- Nút bấm sẽ được JavaScript tự động sinh ra tại đây -->
+                    </div>
+                </aside>
+
+                <!-- Workspace chính -->
+                <main class="letter-workspace">
+                    
+                    <!-- Hàng trên: Thẻ thông tin + Video YouTube -->
+                    <div class="workspace-top-row">
+                        <!-- Thông tin nét/chữ -->
+                        <div class="letter-info-card">
+                            <div id="displayChar" class="display-character">|</div>
+                            <div class="info-details">
+                                <h2 id="charTitle">Nét sổ thẳng</h2>
+                                <p><strong>Chiều cao:</strong> <span id="charHeight">2 ô li</span></p>
+                                <p><strong>Cấu tạo:</strong> <span id="charStrokes">Đường thẳng đứng</span></p>
+                                <p><strong>Cách viết:</strong> <span id="charGuide">Đặt bút ở đk 3 kéo thẳng xuống đk 1.</span></p>
+                                <div class="action-buttons">
+                                    <button id="speakBtn" class="btn-primary">🔊 Phát âm</button>
+                                    <button id="aiGradeBtn" class="btn-ai">⭐ AI Chấm điểm</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Video YouTube Hướng dẫn -->
+                        <div class="video-container-box">
+                            <div class="video-header">🎥 Video bài giảng chuẩn:</div>
+                            <div class="video-wrapper">
+                                <iframe id="youtubeVideo" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hàng dưới: Bảng tập viết ô li -->
+                    <div class="writing-board-container">
+                        <div class="board-header">
+                            <div class="board-title-group">
+                                <span>🎨 Bảng tập viết ô li</span>
+                                <span class="hint-text">(Nhìn nét mẫu mờ chìm bên dưới để viết theo bé nhé!)</span>
+                            </div>
+                            <!-- Chọn màu mực -->
+                            <div class="ink-selector">
+                                <span>Mực bút:</span>
+                                <button class="ink-btn active" data-color="#2f3542" style="background-color: #2f3542;" title="Mực đen/xám"></button>
+                                <button class="ink-btn" data-color="#0984e3" style="background-color: #0984e3;" title="Mực xanh"></button>
+                                <button class="ink-btn" data-color="#d63031" style="background-color: #d63031;" title="Mực đỏ"></button>
+                                <button class="ink-btn" data-color="rainbow" style="background: linear-gradient(45deg, red, yellow, green, blue);" title="Mực thần kỳ"></button>
+                                <button id="clearCanvasBtn" class="btn-secondary" style="margin-left: 10px;">🗑️ Xóa viết lại</button>
+                            </div>
+                        </div>
+
+                        <div class="canvas-wrapper">
+                            <canvas id="writingCanvas"></canvas>
+                        </div>
+                    </div>
+
+                </main>
             </div>
         </div>
+
+        <!-- TAB 2: ĐỐ VUI -->
+        <div id="quiz-tab" class="tab-content">
+            <div class="quiz-container">
+                <div class="quiz-header-status">
+                    <span>Câu hỏi: <strong id="currentQNum">1</strong>/<span id="totalQNum">5</span></span>
+                    <span>Điểm số: <strong id="scoreNum" style="color: #d63031;">0</strong></span>
+                </div>
+
+                <div id="quizCard" class="quiz-card">
+                    <h3 id="questionText">Đang tải câu hỏi...</h3>
+                    <div id="optionsContainer" class="options-grid"></div>
+                    <div class="quiz-footer">
+                        <button id="nextQuizBtn" class="btn-primary" style="display: none;">Câu tiếp theo ➔</button>
+                    </div>
+                </div>
+
+                <div id="quizResult" class="quiz-result" style="display: none;">
+                    <h2>🎉 Hoàn thành xuất sắc! 🎉</h2>
+                    <p>Bé đã ghi được số điểm là:</p>
+                    <h1 id="finalScore" style="color: #2ed573; margin: 15px 0;">0 / 50</h1>
+                    <button id="restartQuizBtn" class="btn-primary">🔄 Chơi lại lần nữa</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <script src="js/data.js"></script>
-    <script src="js/app.js"></script>
+    <!-- Companion Mascot (Mèo Miu đồng hành) -->
+    <div class="mascot-container">
+        <div id="mascotSpeech" class="mascot-speech">Bé ơi, bấm vào ô nét hoặc chữ để Mèo Miu bật video hướng dẫn nha! 🐱</div>
+        <div class="mascot-avatar">🐱</div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="app.js"></script>
 </body>
 </html>
