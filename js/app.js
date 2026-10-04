@@ -1,10 +1,9 @@
-// Variable state
 let currentUser = JSON.parse(localStorage.getItem("currentUser")) || null;
-let currentRole = "HS"; // "HS" hoặc "GV"
-let authTab = "login";  // "login" hoặc "register"
-let currentLetterId = "a";
+let currentRole = "HS";
+let authTab = "login";
+let currentTabType = "alphabet"; // 'alphabet' hoặc 'strokes'
+let selectedItemId = "a";
 
-// Icon minh họa đáng yêu cho 29 chữ cái
 const LETTER_ICONS = {
     "a": "🍎", "aw": "🍇", "aa": "🍋", "b": "🐮", "c": "🐶", "d": "🐬", "dd": "🐥",
     "e": "🐘", "ee": "🐸", "g": "🐔", "h": "🐯", "i": "🍦", "k": "🍬", "l": "🍃",
@@ -12,12 +11,10 @@ const LETTER_ICONS = {
     "r": "🤖", "s": "🦁", "t": "🚀", "u": "⛵", "uw": "🦒", "v": "🎻", "x": "🚗", "y": "🍭"
 };
 
-// Khởi chạy ứng dụng khi tải trang
 window.addEventListener("DOMContentLoaded", () => {
     checkAuthState();
 });
 
-// Kiểm tra trạng thái đăng nhập
 function checkAuthState() {
     const authScreen = document.getElementById("auth-screen");
     const appScreen = document.getElementById("app-screen");
@@ -27,21 +24,19 @@ function checkAuthState() {
         appScreen.classList.remove("hidden");
         updateUserInfoUI();
         renderNav();
-        renderContent("study"); // Mặc định vào màn hình học
+        renderContent("study");
     } else {
         authScreen.classList.remove("hidden");
         appScreen.classList.add("hidden");
     }
 }
 
-// Chuyển đổi Vai trò (Học Sinh / Giáo Viên) ở màn hình đăng nhập
 function setRole(role) {
     currentRole = role;
     document.getElementById("role-hs").classList.toggle("active", role === "HS");
     document.getElementById("role-gv").classList.toggle("active", role === "GV");
 }
 
-// Chuyển đổi Tab Đăng nhập / Đăng ký
 function switchAuthTab(tab) {
     authTab = tab;
     document.getElementById("tab-login").classList.toggle("active", tab === "login");
@@ -59,7 +54,6 @@ function switchAuthTab(tab) {
     }
 }
 
-// Xử lý Đăng nhập / Đăng ký
 function handleAuth(event) {
     event.preventDefault();
     const username = document.getElementById("auth-username").value.trim();
@@ -68,36 +62,22 @@ function handleAuth(event) {
 
     if (!username || !password) return alert("Vui lòng điền đầy đủ thông tin!");
 
-    if (authTab === "register") {
-        currentUser = {
-            username: username,
-            fullname: fullname || username,
-            role: currentRole,
-            avatar: currentRole === "GV" ? "👩‍🏫" : "🐱"
-        };
-        localStorage.setItem("currentUser", JSON.stringify(currentUser));
-        alert("Đăng ký thành công! Mời bé/cô vào học.");
-    } else {
-        currentUser = {
-            username: username,
-            fullname: username,
-            role: currentRole,
-            avatar: currentRole === "GV" ? "👩‍🏫" : "🐱"
-        };
-        localStorage.setItem("currentUser", JSON.stringify(currentUser));
-    }
-
+    currentUser = {
+        username: username,
+        fullname: fullname || username,
+        role: currentRole,
+        avatar: currentRole === "GV" ? "👩‍🏫" : "🐱"
+    };
+    localStorage.setItem("currentUser", JSON.stringify(currentUser));
     checkAuthState();
 }
 
-// Đăng xuất
 function logout() {
     localStorage.removeItem("currentUser");
     currentUser = null;
     checkAuthState();
 }
 
-// Cập nhật giao diện thông tin người dùng
 function updateUserInfoUI() {
     if (!currentUser) return;
     document.getElementById("user-name-display").innerText = currentUser.fullname;
@@ -105,7 +85,6 @@ function updateUserInfoUI() {
     document.getElementById("user-role-tag").innerText = currentUser.role === "GV" ? "👩‍🏫 Giáo viên" : "👶 Học sinh";
 }
 
-// Điều hướng Menu theo vai trò
 function renderNav() {
     const navContainer = document.getElementById("main-nav-container");
     if (currentUser.role === "HS") {
@@ -127,7 +106,6 @@ function switchTab(btn, tabName) {
     renderContent(tabName);
 }
 
-// Hiển thị nội dung theo Tab
 function renderContent(tabName) {
     const contentArea = document.getElementById("content-area");
 
@@ -135,15 +113,16 @@ function renderContent(tabName) {
         contentArea.innerHTML = `
             <div class="workspace-grid">
                 <aside class="alphabet-sidebar">
-                    <div class="sidebar-header">
-                        <h3>🔤 Bảng Chữ Cái (29 Chữ)</h3>
+                    <div style="display:flex; gap:8px; margin-bottom:15px;">
+                        <button id="btn-type-alpha" class="role-btn active" style="font-size:14px; padding:8px;" onclick="switchStudyType('alphabet')">🔤 29 Chữ Cái</button>
+                        <button id="btn-type-stroke" class="role-btn" style="font-size:14px; padding:8px;" onclick="switchStudyType('strokes')">✏️ 14 Nét Cơ Bản</button>
                     </div>
                     <div class="alphabet-grid" id="alphabet-grid"></div>
                 </aside>
                 <section class="lesson-card" id="lesson-detail-area"></section>
             </div>
         `;
-        renderAlphabetSidebar();
+        renderSidebarGrid();
         renderLessonDetail();
     } else if (tabName === "homework") {
         contentArea.innerHTML = `
@@ -151,7 +130,7 @@ function renderContent(tabName) {
                 <h2>📝 Bài Tập Về Nhà Của Bé</h2>
                 <p style="margin-top:10px; font-weight:700;">Hãy hoàn thành các bài tập dưới đây nhé!</p>
                 <div style="margin-top:15px; background:#FEF3C7; padding:15px; border-radius:15px; border:2px dashed #F59E0B;">
-                    📌 <strong>Bài 1:</strong> Xem video và luyện viết chữ <strong>A, Ă, Â</strong> mỗi chữ 1 dòng vào vở ô ly.
+                    📌 <strong>Bài 1:</strong> Xem video và luyện viết 14 nét cơ bản vào vở ô ly.
                 </div>
             </div>
         `;
@@ -159,74 +138,80 @@ function renderContent(tabName) {
         contentArea.innerHTML = `
             <div class="lesson-card">
                 <h2>👩‍🏫 Bảng Quản Lý Dành Cho Giáo Viên</h2>
-                <p style="margin-top:10px; font-weight:700;">Cô có thể giao thêm bài tập viết chữ cho các bé tại đây.</p>
+                <p style="margin-top:10px; font-weight:700;">Cô có thể giao thêm bài tập cho các bé tại đây.</p>
             </div>
         `;
     }
 }
 
-// Hiển thị Bảng 29 chữ cái bên trái (Có icon minh họa)
-function renderAlphabetSidebar() {
+function switchStudyType(type) {
+    currentTabType = type;
+    document.getElementById("btn-type-alpha").classList.toggle("active", type === "alphabet");
+    document.getElementById("btn-type-stroke").classList.toggle("active", type === "strokes");
+    selectedItemId = type === "alphabet" ? "a" : "sothang";
+    renderSidebarGrid();
+    renderLessonDetail();
+}
+
+function renderSidebarGrid() {
     const grid = document.getElementById("alphabet-grid");
     if (!grid) return;
 
-    grid.innerHTML = ALPHABET_DATA.map(item => {
-        const icon = LETTER_ICONS[item.id] || "✏️";
-        const isActive = item.id === currentLetterId ? "active" : "";
+    const dataset = currentTabType === "alphabet" ? ALPHABET_DATA : BASIC_STROKES_DATA;
+
+    grid.innerHTML = dataset.map(item => {
+        const icon = currentTabType === "alphabet" ? (LETTER_ICONS[item.id] || "✏️") : "✍️";
+        const displayText = currentTabType === "alphabet" ? `${item.upper} ${item.lower}` : item.char;
+        const isActive = item.id === selectedItemId ? "active" : "";
         return `
-            <button class="letter-btn ${isActive}" onclick="selectLetter('${item.id}')">
-                <span class="char">${item.upper} ${item.lower}</span>
+            <button class="letter-btn ${isActive}" onclick="selectItem('${item.id}')">
+                <span class="char">${displayText}</span>
                 <span class="sub-icon">${icon}</span>
             </button>
         `;
     }).join("");
 }
 
-// Chọn chữ cái để xem bài học
-function selectLetter(letterId) {
-    currentLetterId = letterId;
-    renderAlphabetSidebar();
+function selectItem(id) {
+    selectedItemId = id;
+    renderSidebarGrid();
     renderLessonDetail();
 }
 
-// Hiển thị chi tiết bài học chữ cái + Khung TV Video
-function selectItem(itemId) {
-    // Tìm trong danh sách chữ cái HOẶC danh sách nét cơ bản
-    const allData = [...ALPHABET_DATA, ...BASIC_STROKES];
-    const item = allData.find(i => i.id === itemId);
-    if (!item) return;
-
+function renderLessonDetail() {
     const detailArea = document.getElementById("lesson-detail-area");
     if (!detailArea) return;
 
+    const dataset = currentTabType === "alphabet" ? ALPHABET_DATA : BASIC_STROKES_DATA;
+    const lesson = dataset.find(item => item.id === selectedItemId) || dataset[0];
+    const icon = currentTabType === "alphabet" ? (LETTER_ICONS[lesson.id] || "✏️") : "✍️";
+
     detailArea.innerHTML = `
-        <h2 style="font-size:24px; color:#FF477E; text-align:center; margin-bottom:15px;">
-            🎬 Bài học: ${item.name}
+        <h2 style="font-size:26px; color:#FF477E; font-weight:900;">
+            ${icon} Bài Học: ${lesson.name} ${lesson.upper ? `(${lesson.upper} -${lesson.lower})` : ''}
         </h2>
 
-        <div class="tv-container" style="max-width:640px; margin:0 auto;">
-            <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px;">
+        <div class="tv-container">
+            <div class="video-frame-container">
                 <iframe 
-                    style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
-                    src="https://www.youtube-nocookie.com/embed/${item.youtubeId}?rel=0&autoplay=1" 
-                    title="${item.name}"
+                    src="https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?rel=0" 
+                    title="${lesson.name}"
+                    frameborder="0" 
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowfullscreen>
                 </iframe>
             </div>
         </div>
 
-        <div style="background:#FFF3F8; padding:15px; border-radius:10px; margin-top:15px; border-left:5px solid #FF477E;">
-            <strong>✍️ Hướng dẫn nét viết:</strong>
-            <p style="margin-top:5px; color:#444;">${item.description}</p>
+        <div class="lesson-guide">
+            <div class="guide-title">
+                <span>✏️</span> Hướng dẫn nét viết:
+            </div>
+            <div class="guide-text">${lesson.description}</div>
         </div>
     `;
-    
-    // Tự động cuộn đến phần xem video
-    detailArea.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Modal Cập nhật tài khoản
 function openEditProfileModal() {
     if (!currentUser) return;
     document.getElementById("edit-name-input").value = currentUser.fullname;
