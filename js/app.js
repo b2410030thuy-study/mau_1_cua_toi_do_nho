@@ -190,40 +190,40 @@ function selectLetter(letterId) {
 }
 
 // Hiển thị chi tiết bài học chữ cái + Khung TV Video
-function renderLessonDetail() {
+function selectItem(itemId) {
+    // Tìm trong danh sách chữ cái HOẶC danh sách nét cơ bản
+    const allData = [...ALPHABET_DATA, ...BASIC_STROKES];
+    const item = allData.find(i => i.id === itemId);
+    if (!item) return;
+
     const detailArea = document.getElementById("lesson-detail-area");
     if (!detailArea) return;
 
-    const lesson = ALPHABET_DATA.find(item => item.id === currentLetterId) || ALPHABET_DATA[0];
-    const icon = LETTER_ICONS[lesson.id] || "✏️";
-
     detailArea.innerHTML = `
-        <h2 style="font-size:26px; color:#FF477E; font-weight:900;">
-            ${icon} Bài Học: ${lesson.name} (${lesson.upper} - ${lesson.lower})
+        <h2 style="font-size:24px; color:#FF477E; text-align:center; margin-bottom:15px;">
+            🎬 Bài học: ${item.name}
         </h2>
 
-        <!-- KHUNG MÀN HÌNH TV HOẠT HÌNH -->
-        <div class="tv-container">
-            <div class="video-frame-container">
+        <div class="tv-container" style="max-width:640px; margin:0 auto;">
+            <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:12px;">
                 <iframe 
-                    src="https://www.youtube-nocookie.com/embed/${lesson.youtubeId}?rel=0" 
-                    title="${lesson.name}"
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    referrerpolicy="strict-origin-when-cross-origin"
+                    style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+                    src="https://www.youtube-nocookie.com/embed/${item.youtubeId}?rel=0&autoplay=1" 
+                    title="${item.name}"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                     allowfullscreen>
                 </iframe>
             </div>
         </div>
 
-        <!-- BẢNG HƯỚNG DẪN VIẾT NÉT -->
-        <div class="lesson-guide">
-            <div class="guide-title">
-                <span>✏️</span> Hướng dẫn cách viết chữ ${lesson.lower}:
-            </div>
-            <div class="guide-text">${lesson.description}</div>
+        <div style="background:#FFF3F8; padding:15px; border-radius:10px; margin-top:15px; border-left:5px solid #FF477E;">
+            <strong>✍️ Hướng dẫn nét viết:</strong>
+            <p style="margin-top:5px; color:#444;">${item.description}</p>
         </div>
     `;
+    
+    // Tự động cuộn đến phần xem video
+    detailArea.scrollIntoView({ behavior: 'smooth' });
 }
 
 // Modal Cập nhật tài khoản
